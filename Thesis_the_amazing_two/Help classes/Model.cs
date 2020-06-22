@@ -5,7 +5,7 @@ using System.Linq;
 using Rhino.Geometry;
  
 
-namespace Thesis_1.Help_classes
+namespace Thesis.Help_classes
 {
     public abstract class Model
     {

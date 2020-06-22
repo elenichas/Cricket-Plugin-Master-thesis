@@ -4,12 +4,12 @@ using System.Drawing;
 using System.Linq;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using Thesis_1.Help_classes;
+using Thesis.Help_classes;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel.Attributes;
 
 
-namespace Thesis_1
+namespace Thesis
 {
     public class ModelSynthesisColors : GH_Component 
     {
@@ -157,7 +157,7 @@ namespace Thesis_1
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("ccb5823e-690e-4cb7-ac6d-dd5bfc54fa55"); }
+            get { return new Guid("887674AC-7B8D-4E16-88E5-AA6F5C3573CA"); }
         }
     }
     //the customAttributes class changed the color of my GA component to pink :)

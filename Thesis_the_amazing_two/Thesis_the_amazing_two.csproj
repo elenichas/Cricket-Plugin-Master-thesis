@@ -8,7 +8,7 @@
     <ProjectGuid>{1638DD4E-F178-4968-BCE9-11379B725BB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thesis_the_amazing_two</RootNamespace>
+    <RootNamespace>Thesis</RootNamespace>
     <AssemblyName>Thesis_the_amazing_two</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,10 +56,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ThesistheamazingtwoComponent.cs" />
+    <Compile Include="Components\ModelSynthesisColors.cs" />
+    <Compile Include="Help classes\Coord3d.cs" />
+    <Compile Include="Help classes\Extensions.cs" />
+    <Compile Include="Help classes\InputModel.cs" />
+    <Compile Include="Help classes\Model.cs" />
+    <Compile Include="Help classes\SimpleDemo.cs" />
+    <Compile Include="Help classes\SimpleModel.cs" />
+    <Compile Include="Help classes\Voxel.cs" />
+    <Compile Include="Help classes\VoxelModel.cs" />
     <Compile Include="Thesis_the_amazing_twoInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

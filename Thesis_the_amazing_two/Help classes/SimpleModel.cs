@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
  
 
-namespace Thesis_1.Help_classes
+namespace Thesis.Help_classes
 {
     public sealed class SimpleModel : Model
     {

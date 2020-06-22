@@ -2,7 +2,7 @@
 using System.Drawing;
 using Grasshopper.Kernel;
 
-namespace Thesis_the_amazing_two
+namespace Thesis
 {
     public class Thesis_the_amazing_twoInfo : GH_AssemblyInfo
     {

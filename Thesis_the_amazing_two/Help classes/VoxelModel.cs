@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
  
 
-namespace Thesis_1.Help_classes
+namespace Thesis.Help_classes
 {
     public class VoxelModel
     {

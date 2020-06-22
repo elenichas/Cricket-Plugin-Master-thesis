@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Rhino.Geometry;
 
-namespace Thesis_1.Help_classes
+namespace Thesis.Help_classes
 {
     public class SimpleDemo
     {

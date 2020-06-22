@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thesis_1.Help_classes
+namespace Thesis.Help_classes
 {
     public struct Coord3D : IEquatable<Coord3D>
     {
