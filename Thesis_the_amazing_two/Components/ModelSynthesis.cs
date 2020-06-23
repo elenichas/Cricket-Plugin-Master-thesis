@@ -11,16 +11,16 @@ using Grasshopper.Kernel.Attributes;
 
 namespace Thesis
 {
-    public class ModelSynthesisColors : GH_Component 
+    public class ModelSynthesis : GH_Component 
     {
 
         public override void CreateAttributes()
         {
             m_attributes = new CustomAttributes(this);
         }
-        public ModelSynthesisColors()
-          : base("Model SynthesisColors", "Model SynthesisColors",
-              "for colors",
+        public ModelSynthesis()
+          : base("Model Synthesis", "Model Synthesis",
+              "Generic",
               "Thesis_1", "Colors")
         {
         }
@@ -28,7 +28,7 @@ namespace Thesis
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {           
             pManager.AddBoxParameter("Input Model", "IM", "The input model", GH_ParamAccess.list);
-            pManager.AddColourParameter("Input Colors", "IC", "The colors of voxels int the input model", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Input Values", "IV", "The values of voxels int the input model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Pattern Size", "P", "The pattern size to infer from the input model", GH_ParamAccess.item);
             pManager.AddVectorParameter("Input Size", "IP", "Size in XYZ", GH_ParamAccess.item);
             pManager.AddVectorParameter("Output Size", "OP", "Size in XYZ", GH_ParamAccess.item);
@@ -43,14 +43,14 @@ namespace Thesis
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
-            pManager.AddColourParameter("Output Colors", "OC", "The output colors", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
             pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
         }
 
 
         List<Box> OutBoxes2 = new List<Box>();
-        List<Color> OutColors = new List<Color>();
+        List<int> OutValues = new List<int>();
         List<string> Prob = new List<string>();
 
 
@@ -58,7 +58,7 @@ namespace Thesis
         {
             List<Box> InputBoxes = new List<Box>();
             List<Voxel> InputVoxels = new List<Voxel>();
-            List<Color> InputColors = new List<Color>();
+            List<int> InputValues = new List<int>();
 
             Vector3d inSize = new Vector3d();
             Vector3d outSize = new Vector3d();
@@ -70,7 +70,7 @@ namespace Thesis
             int Pattern_Size = 0;
 
             if (!DA.GetDataList(0,  InputBoxes)) return;
-            if (!DA.GetDataList(1,  InputColors)) return;
+            if (!DA.GetDataList(1,  InputValues)) return;
             if (!DA.GetData(2, ref Pattern_Size)) return;
             if (!DA.GetData(3, ref inSize)) return;
             if (!DA.GetData(4, ref outSize)) return;
@@ -81,8 +81,8 @@ namespace Thesis
             //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
             for (int i = 0; i < InputBoxes.Count; i++)
             {
-               Color col = InputColors[i];              
-               Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), col);
+              int val = InputValues[i];              
+               Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), val);
                InputVoxels.Add(vox);
                  
             }
@@ -108,7 +108,7 @@ namespace Thesis
 
             if (Output_voxels.Count > 0)
             {
-                OutColors = new List<Color>();
+                OutValues = new List<int>();
                 OutBoxes2 = new List<Box>();
                 foreach (var v in Output_voxels)
                 {
@@ -116,14 +116,14 @@ namespace Thesis
                     var plane = new Plane(new Point3d(((int)v.X) * 1.0, ((int)v.Y) * 1.0, ((int)v.Z) * 1.0), Vector3d.ZAxis);
                     var b = new Box(plane, domain, domain, domain);
                     OutBoxes2.Add(b);
-                   OutColors.Add(rawOutput[v.X, v.Y, v.Z]);
+                   OutValues.Add(rawOutput[v.X, v.Y, v.Z]);
                     
                 }
             }
 
 
             DA.SetDataList(0, OutBoxes2);
-            DA.SetDataList(1, OutColors);
+            DA.SetDataList(1, OutValues);
 
             DA.SetData(2, demo.Model.patterns.Count());
 

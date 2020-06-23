@@ -10,9 +10,9 @@ namespace Thesis.Help_classes
         public byte X, Y, Z;
 
         //the color of each voxel
-        public Color Color;
+        public int Color;
  
-        public Voxel(int x, int y, int z, Color color)
+        public Voxel(int x, int y, int z, int color)
         {
             X = (byte)x;
             Y = (byte)y;

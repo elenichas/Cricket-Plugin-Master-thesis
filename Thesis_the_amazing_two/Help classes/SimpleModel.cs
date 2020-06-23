@@ -51,8 +51,8 @@ namespace Thesis.Help_classes
 
         protected override void Init(InputModel inputModel, int patternSize, bool periodic)
         {
-            var inputMatrix = new Color[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
-            patterns = new List<Color[,,]>();
+            var inputMatrix = new int[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
+            patterns = new List<int[,,]>();
             patternMatrix = new int[(int)Math.Ceiling((double)(inputModel.Size.X / patternSize)),
                 (int)Math.Ceiling((double)(inputModel.Size.Y / patternSize)),
                 (int)Math.Ceiling((double)(inputModel.Size.Z / patternSize))];
@@ -394,9 +394,9 @@ namespace Thesis.Help_classes
             GenerationFinished = CheckIfFinished();
         }
 
-        public override Color[,,] GetOutput()
+        public override int[,,] GetOutput()
         {
-            var res = new Color[outputMatrix.GetLength(0) * PatternSize, outputMatrix.GetLength(1) * PatternSize, outputMatrix.GetLength(2) * PatternSize];
+            var res = new int[outputMatrix.GetLength(0) * PatternSize, outputMatrix.GetLength(1) * PatternSize, outputMatrix.GetLength(2) * PatternSize];
             for (var x = 0; x < outputMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < outputMatrix.GetLength(1); y++)

@@ -14,7 +14,7 @@ namespace Thesis.Help_classes
         public SimpleModel Model;
         public InputModel myModel;
 
-        public  static Color[,,] output;
+        public  static int[,,] output;
 
         public SimpleDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic) 
         { 

@@ -14,7 +14,7 @@ namespace Thesis.Help_classes
         public bool Periodic { get; protected set; }
 
         protected int[,,] patternMatrix;
-        public List<Color[,,]> patterns;
+        public List<int[,,]> patterns;
         protected int PatternSize { get; set; }
         public  Dictionary<int, double> probabilites;
 
@@ -35,13 +35,13 @@ namespace Thesis.Help_classes
 
         protected abstract void Propagate(Coord3D startPoint);
 
-        public abstract Color[,,] GetOutput();
+        public abstract int[,,] GetOutput();
 
         //Auxiliary methods.
 
-        protected static Color[,,] GetCurrentPattern(Color[,,] matrix, int x, int y, int z, int patternSize)
+        protected static int[,,] GetCurrentPattern(int[,,] matrix, int x, int y, int z, int patternSize)
         {
-            var pattern = new Color[patternSize, patternSize, patternSize];
+            var pattern = new int[patternSize, patternSize, patternSize];
             for (var i = x; i < x + patternSize; i++)
             {
                 for (var j = y; j < y + patternSize; j++)

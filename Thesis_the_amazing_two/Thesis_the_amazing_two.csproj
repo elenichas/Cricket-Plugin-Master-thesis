@@ -56,7 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ModelSynthesisColors.cs" />
+    <Compile Include="Components\ModelSynthesis.cs" />
     <Compile Include="Help classes\Coord3d.cs" />
     <Compile Include="Help classes\Extensions.cs" />
     <Compile Include="Help classes\InputModel.cs" />
