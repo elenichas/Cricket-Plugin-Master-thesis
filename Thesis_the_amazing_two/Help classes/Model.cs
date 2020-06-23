@@ -9,19 +9,19 @@ namespace Thesis.Help_classes
 {
     public abstract class Model
     {
-        protected static readonly Random Rnd = new Random();
+        public static readonly Random Rnd = new Random();
         public bool ProbabilisticModel { get; protected set; }
         public bool Periodic { get; protected set; }
 
-        protected int[,,] patternMatrix;
+        public int[,,] patternMatrix;
         public List<int[,,]> patterns;
-        protected int PatternSize { get; set; }
+        public int PatternSize { get; set; }
         public  Dictionary<int, double> probabilites;
 
         public Dictionary<int, Dictionary<Coord3D, List<int>>> NeighboursMap { get; protected set; }
-        protected List<int>[,,] outputMatrix;
+        public List<int>[,,] outputMatrix;
 
-        protected Coord3D OutputSize { get; set; }
+        public Coord3D OutputSize { get; set; }
 
         public bool GenerationFinished { get; protected set; } = false;
         public bool Contradiction { get; protected set; } = false;

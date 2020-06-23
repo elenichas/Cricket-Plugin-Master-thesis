@@ -18,11 +18,13 @@ namespace Thesis.Help_classes
 
         public SimpleDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic) 
         { 
+            //from this model we get our input
             InputModel model = new InputModel(new Coord3D((int)inSize.X, (int)inSize.Y, (int)inSize.Z), inputVoxels);
 
-
+            //this is the size of the output model
             var outputSizeInCoord = new Coord3D((int)outSize.X, (int)outSize.Y, (int)outSize.Z);
 
+            //from this model we will get our output
             Model = new SimpleModel(model, pattern_Size, outputSizeInCoord, periodic,true, probabilistic);
         }
 
@@ -48,15 +50,12 @@ namespace Thesis.Help_classes
 
         public void DisplayOutput()
         {
-  
              output = Model.GetOutput();
-    
         }
 
         public void ClearModel()
         {
             Model.Clear();
- 
             Rhino.RhinoApp.WriteLine("Model cleared!");
         }
 
