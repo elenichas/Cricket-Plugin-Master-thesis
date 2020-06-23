@@ -70,7 +70,7 @@ namespace Thesis.Help_classes
         }
 
  
-        public static int ContainsPattern(this List<Color[,,]> patternList, Color[,,] pattern)
+        public static int ContainsPattern(this List<int[,,]> patternList, int[,,] pattern)
         {
             //If the list is empty return false.
             if (patternList.Count == 0) return -1;
@@ -100,7 +100,7 @@ namespace Thesis.Help_classes
             return -1;
         }
 
-        public static bool FitsPattern(this Color[,,] pattern,Color[,,] otherPattern, Coord3D side)
+        public static bool FitsPattern(this int[,,] pattern,int[,,] otherPattern, Coord3D side)
         {
             int startX = 0;
             int startY = 0;
