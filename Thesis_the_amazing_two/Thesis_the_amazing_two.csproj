@@ -66,6 +66,7 @@
     <Compile Include="Help classes\Voxel.cs" />
     <Compile Include="Help classes\VoxelModel.cs" />
     <Compile Include="Components\Encoder.cs" />
+    <Compile Include="Components\ColorEncoder.cs" />
     <Compile Include="Thesis_the_amazing_twoInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
