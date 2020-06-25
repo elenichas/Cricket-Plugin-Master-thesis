@@ -20,8 +20,8 @@ namespace Thesis
         }
         public ModelSynthesis()
           : base("Model Synthesis", "Model Synthesis",
-              "Generic",
-              "Thesis_1", "Colors")
+              "does the model synthesis",
+              "Thesis", "Synthesis")
         {
         }
 
