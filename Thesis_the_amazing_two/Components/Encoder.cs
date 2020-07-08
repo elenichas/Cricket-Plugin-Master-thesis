@@ -113,7 +113,10 @@ namespace Thesis
                     List<Point3d> ClosestPts = new List<Point3d>();
                     for (int e = 0; e < DivTree.Branch(m).Count; e++)
                     {
-                        ClosestPts.Add(InputChunks[i].ClosestPoint(DivTree.Branch(m)[e]));
+                        if (!(InputChunks[i] == null))
+                            ClosestPts.Add(InputChunks[i].ClosestPoint(DivTree.Branch(m)[e]));
+                        else
+                            ClosestPts.Add(new Point3d());
                     }
                     ClosestTree.AddRange(ClosestPts, new GH_Path(new int[] { m, 0 }));
                 }
