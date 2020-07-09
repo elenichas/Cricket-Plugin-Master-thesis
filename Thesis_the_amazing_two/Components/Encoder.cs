@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Grasshopper;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
@@ -22,7 +23,7 @@ namespace Thesis
         public Encoder()
           : base("Encoder", "Encoder",
               "does the encoding",
-              "Thesis", "Encoding")
+              "Thesis", "Encode-Decode")
         {
         }
 
@@ -40,7 +41,9 @@ namespace Thesis
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Binary Code", "BC", "The  binary encoding of each voxel", GH_ParamAccess.list);
+            pManager.AddTextParameter("Binary Codes", "BC", "The  binary encoding of each voxel", GH_ParamAccess.list);
+            pManager.AddTextParameter("Unique Binary Codes", "UBC", "The  unique binary codes in the binary codes list", GH_ParamAccess.list);
+            pManager.AddTextParameter("Encoded List", "EL", "The list of chuncks encoded based the index they exist in UBC", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -60,6 +63,44 @@ namespace Thesis
             
             var OutputCodes = Encode(InputVoxels, InputChunks);
             DA.SetDataList(0, OutputCodes);
+
+            var Uniques = FindUnique(OutputCodes);
+            DA.SetDataList(1, Uniques);
+
+            var IntegersList = MakeIntList(Uniques, OutputCodes);
+            DA.SetDataList(2, IntegersList);
+        }
+
+        public List<int> MakeIntList(string[] unique_array,List<string> OutputCodes)
+        {
+            //encode the list of geometries based on the indices in the unique array
+
+            var encoded_list = new List<int>();
+            for (int i = 0; i < OutputCodes.Count; i++)
+            {
+                for (int j = 0; j < unique_array.Length; j++)
+                {
+                    if (unique_array[j] == OutputCodes[i])
+                    {
+                        encoded_list.Add(j);
+
+
+                    }
+
+                }
+            }
+            return encoded_list;
+        }
+        public string[] FindUnique(List<string> OutputCodes)
+        {
+            //get the unique items from the code list
+            var unique_items = new HashSet<string>(OutputCodes);
+
+
+            //create an array with the unique strings
+            string[] unique_array = new string[unique_items.Count + 1];
+            unique_items.CopyTo(unique_array, 1);
+            return unique_array;
         }
 
         public List<string> Encode(List<Brep> InputVoxels,List <Mesh> InputChunks)

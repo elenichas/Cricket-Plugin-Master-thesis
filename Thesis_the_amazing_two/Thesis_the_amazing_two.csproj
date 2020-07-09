@@ -56,7 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Collection.cs" />
     <Compile Include="Components\ModelSynthesis.cs" />
+    <Compile Include="Components\Decoder.cs" />
     <Compile Include="Help classes\Coord3d.cs" />
     <Compile Include="Help classes\Extensions.cs" />
     <Compile Include="Help classes\InputModel.cs" />
@@ -66,7 +68,6 @@
     <Compile Include="Help classes\Voxel.cs" />
     <Compile Include="Help classes\VoxelModel.cs" />
     <Compile Include="Components\Encoder.cs" />
-    <Compile Include="Components\ColorEncoder.cs" />
     <Compile Include="Thesis_the_amazing_twoInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
