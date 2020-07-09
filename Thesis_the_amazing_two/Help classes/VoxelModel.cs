@@ -22,6 +22,7 @@ namespace Thesis.Help_classes
                         //we assign 0 for empty voxels
                         if (output[x, y, z] != 0)                
                          {
+                             
                            var cube = new Voxel(x, y, z, output[x,y,z]);
                            voxels.Add(cube);
                         }

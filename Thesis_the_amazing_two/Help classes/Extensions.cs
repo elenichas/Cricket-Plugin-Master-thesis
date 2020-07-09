@@ -100,7 +100,7 @@ namespace Thesis.Help_classes
             return -1;
         }
 
-        public static bool FitsPattern(this int[,,] pattern,int[,,] otherPattern, Coord3D side)
+        public static bool FitsPattern(this int[,,] pattern, int[,,] otherPattern, Coord3D side)
         {
             int startX = 0;
             int startY = 0;
@@ -114,12 +114,16 @@ namespace Thesis.Help_classes
             int startY2 = 0;
             int startZ2 = 0;
 
+            int endX2 = pattern.GetLength(0);
+            int endY2 = pattern.GetLength(1);
+            int endZ2 = pattern.GetLength(2);
+
 
             if (side.Equals(Coord3D.Left))
             {
 
                 startX = pattern.GetLength(0) - 1;
-                //endX2 = 1;
+                endX2 = 1;
 
             }
             else if (side.Equals(Coord3D.Right))
@@ -129,23 +133,33 @@ namespace Thesis.Help_classes
                 startX2 = pattern.GetLength(0) - 1;
 
             }
-            else if (side.Equals(Coord3D.Down))
-            {
-                endY = 1;
-                startY2 = pattern.GetLength(1) - 1;
-            }
-            else if (side.Equals(Coord3D.Up))
-            {
-                startY = pattern.GetLength(1) - 1; 
-            }
             else if (side.Equals(Coord3D.Back))
             {
-                startZ = pattern.GetLength(2) - 1;      
+
+                endY = 1;
+                startY2 = pattern.GetLength(1) - 1;
+
             }
             else if (side.Equals(Coord3D.Forward))
             {
-               endZ = 1;
-               startZ2 = pattern.GetLength(2) - 1;
+
+                startY = pattern.GetLength(1) - 1;
+                endY2 = 1;
+
+            }
+            else if (side.Equals(Coord3D.Down))
+            {
+
+                startZ = pattern.GetLength(2) - 1;
+                endZ2 = 1;
+
+            }
+            else if (side.Equals(Coord3D.Up))
+            {
+
+                endZ = 1;
+                startZ2 = pattern.GetLength(2) - 1;
+
             }
 
             var loopX2 = startX2;
@@ -173,7 +187,7 @@ namespace Thesis.Help_classes
             return true;
         }
 
-        public static List<int>[,,] CloneMatrix(this List<int>[,,] matrix)
+            public static List<int>[,,] CloneMatrix(this List<int>[,,] matrix)
         {
             var res = new List<int>[matrix.GetLength(0), matrix.GetLength(1), matrix.GetLength(2)];
 
