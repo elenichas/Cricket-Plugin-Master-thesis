@@ -133,28 +133,28 @@ namespace Thesis.Help_classes
                 startX2 = pattern.GetLength(0) - 1;
 
             }
-            else if (side.Equals(Coord3D.Back))
+            else if (side.Equals(Coord3D.Down))
             {
 
                 endY = 1;
                 startY2 = pattern.GetLength(1) - 1;
 
             }
-            else if (side.Equals(Coord3D.Forward))
+            else if (side.Equals(Coord3D.Up))
             {
 
                 startY = pattern.GetLength(1) - 1;
                 endY2 = 1;
 
             }
-            else if (side.Equals(Coord3D.Down))
+            else if (side.Equals(Coord3D.Back))
             {
 
                 startZ = pattern.GetLength(2) - 1;
                 endZ2 = 1;
 
             }
-            else if (side.Equals(Coord3D.Up))
+            else if (side.Equals(Coord3D.Forward))
             {
 
                 endZ = 1;

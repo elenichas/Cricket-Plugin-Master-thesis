@@ -59,6 +59,7 @@
     <Compile Include="Components\Collection.cs" />
     <Compile Include="Components\ModelSynthesis.cs" />
     <Compile Include="Components\Decoder.cs" />
+    <Compile Include="Components\ModelSynthesis2.cs" />
     <Compile Include="Help classes\Coord3d.cs" />
     <Compile Include="Help classes\Extensions.cs" />
     <Compile Include="Help classes\InputModel.cs" />

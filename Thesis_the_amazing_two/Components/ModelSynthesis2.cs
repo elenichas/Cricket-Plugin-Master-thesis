@@ -8,25 +8,24 @@ using Thesis.Help_classes;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel.Attributes;
 
-
-namespace Thesis
+namespace Thesis.Components
 {
-    public class ModelSynthesis : GH_Component 
+    public class ModelSynthesis2 : GH_Component
     {
 
         public override void CreateAttributes()
         {
             m_attributes = new CustomAttributes(this);
         }
-        public ModelSynthesis()
-          : base("Model Synthesis", "Model Synthesis",
+        public ModelSynthesis2()
+          : base("Model Synthesis2", "Model Synthesis2",
               "does the model synthesis",
-              "Thesis", "Synthesis")
+              "Thesis", "Synthesis2")
         {
         }
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
-        {           
+        {
             pManager.AddBoxParameter("Input Model", "IM", "The input model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Input Values", "IV", "The values of voxels int the input model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Pattern Size", "P", "The pattern size to infer from the input model", GH_ParamAccess.item);
@@ -34,7 +33,8 @@ namespace Thesis
             pManager.AddVectorParameter("Output Size", "OP", "Size in XYZ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Probabilistic", "PR", " ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Periodic", "PE", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", "Generate?", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("RESET", "R", "Reset", GH_ParamAccess.item);
+
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Thesis
         List<Box> OutBoxes2 = new List<Box>();
         List<int> OutValues = new List<int>();
         List<string> Prob = new List<string>();
-
+        SimpleDemo demo;
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
@@ -63,46 +63,42 @@ namespace Thesis
             Vector3d inSize = new Vector3d();
             Vector3d outSize = new Vector3d();
 
-            bool Generate = false;          
+            bool Reset = false;
             bool Probabilistic = true;
             bool Periodic = true;
-           
+
             int Pattern_Size = 0;
 
-            if (!DA.GetDataList(0,  InputBoxes)) return;
-            if (!DA.GetDataList(1,  InputValues)) return;
+            if (!DA.GetDataList(0, InputBoxes)) return;
+            if (!DA.GetDataList(1, InputValues)) return;
             if (!DA.GetData(2, ref Pattern_Size)) return;
             if (!DA.GetData(3, ref inSize)) return;
             if (!DA.GetData(4, ref outSize)) return;
             if (!DA.GetData(5, ref Probabilistic)) return;
             if (!DA.GetData(6, ref Periodic)) return;
-            if (!DA.GetData(7, ref Generate)) return;
+            if (!DA.GetData(7, ref Reset)) return;
 
-            //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
-            //we flipt the y and z because the code is written in unity logic
-            for (int i = 0; i < InputBoxes.Count; i++)
+            if (Reset)
             {
-              int val = InputValues[i];              
-               Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), val);
-               InputVoxels.Add(vox);
-                 
-            }
+                //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
+                //we flipt the y and z because the code is written in unity logic
+                for (int i = 0; i < InputBoxes.Count; i++)
+                {
+                    int val = InputValues[i];
+                    Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), val);
+                    InputVoxels.Add(vox);
 
-            var demo = new SimpleDemo(inSize, outSize, InputVoxels, Pattern_Size, Probabilistic, Periodic);
-            
-            if (Generate)
-            {
-
+                }
+                demo = new SimpleDemo(inSize, outSize, InputVoxels, Pattern_Size, Probabilistic, Periodic);
                 demo.ClearModel();
-                demo.GenerateOutput();
-                Rhino.RhinoApp.WriteLine(demo.Model.GenerationFinished.ToString());
             }
+            
+                
+                demo.GenerateOutputOnDemand();
+
             var Output_voxels = new List<Voxel>();
-           
-            if (demo.Model.GenerationFinished)
-            {
-                Output_voxels = demo.GetOutput();
-            }
+
+           Output_voxels = demo.GetOutput();
 
             //I will get the colors form this one
             var rawOutput = demo.Model.GetOutput();
@@ -117,8 +113,8 @@ namespace Thesis
                     var plane = new Plane(new Point3d(((int)v.X) * 1.0, ((int)v.Y) * 1.0, ((int)v.Z) * 1.0), Vector3d.ZAxis);
                     var b = new Box(plane, domain, domain, domain);
                     OutBoxes2.Add(b);
-                   OutValues.Add(rawOutput[v.X, v.Y, v.Z]);
-                    
+                    OutValues.Add(rawOutput[v.X, v.Y, v.Z]);
+
                 }
             }
 
@@ -131,60 +127,31 @@ namespace Thesis
             Prob = new List<string>();
             foreach (KeyValuePair<int, double> kvp in demo.Model.probabilites)
             {
-                var st =(kvp.Key.ToString() + "--->" + (Math.Truncate(1000* kvp.Value)/1000).ToString());
+                var st = (kvp.Key.ToString() + "--->" + (Math.Truncate(1000 * kvp.Value) / 1000).ToString());
                 Prob.Add(st);
             }
             DA.SetDataList(3, Prob);
         }
 
         /// <summary>
-        /// Provides an Icon for every component that will be visible in the User Interface.
-        /// Icons need to be 24x24 pixels.
+        /// Provides an Icon for the component.
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
             get
             {
-                // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
+                //You can add image files to your project resources and access them like this:
+                // return Resources.IconForThisComponent;
                 return null;
             }
         }
 
         /// <summary>
-        /// Each component must have a unique Guid to identify it. 
-        /// It is vital this Guid doesn't change otherwise old ghx files 
-        /// that use the old ID will partially fail during loading.
+        /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("887674AC-7B8D-4E16-88E5-AA6F5C3573CA"); }
-        }
-    }
-    //the customAttributes class changed the color of my GA component to pink :)
-    public class CustomAttributes : GH_ComponentAttributes
-    {
-        public CustomAttributes(IGH_Component component)
-          : base(component)
-        { }
-
-        protected override void Render(GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
-        {
-            if (channel == GH_CanvasChannel.Objects)
-            {
-                // Cache the existing style.
-                GH_PaletteStyle style = GH_Skin.palette_normal_standard;
-
-                // Swap out palette for normal, unselected components.
-                GH_Skin.palette_normal_standard = new GH_PaletteStyle(Color.Pink, Color.Black, Color.Black);
-
-                base.Render(canvas, graphics, channel);
-
-                // Put the original style back.
-                GH_Skin.palette_normal_standard = style;
-            }
-            else
-                base.Render(canvas, graphics, channel);
+            get { return new Guid("ea2c4647-53f2-4c6d-8781-9dd38e220066"); }
         }
     }
 }

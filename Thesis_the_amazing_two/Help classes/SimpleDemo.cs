@@ -47,6 +47,10 @@ namespace Thesis.Help_classes
             }
             Rhino.RhinoApp.WriteLine($"I am done after {Model.NumGen} iterations!");
         }
+        public void GenerateOutputOnDemand()
+        {
+                Model.Observe();
+        }
 
         public void DisplayOutput()
         {

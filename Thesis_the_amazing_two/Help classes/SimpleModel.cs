@@ -11,7 +11,7 @@ namespace Thesis.Help_classes
     {
         //The six possible directions.
         public readonly Coord3D[] Directions = new Coord3D[6]
-           {Coord3D.Right, Coord3D.Left, Coord3D.Up, Coord3D.Down, Coord3D.Forward, Coord3D.Back};
+           {Coord3D.Left, Coord3D.Right, Coord3D.Up, Coord3D.Down, Coord3D.Forward, Coord3D.Back};
 
         public SimpleModel(InputModel inputModel, int patternSize, Coord3D outputSize, bool periodic, bool addNeighbours, bool probabilisticModel)
         {
@@ -42,7 +42,15 @@ namespace Thesis.Help_classes
                 //this method calls the CheckAddNeighbors method for 
                 //every pattern and every other pattern in pattern matrix
                 DetectNeighbours();
+
             }
+            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
+            //{
+            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
+            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
+            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
+
+            //}
 
             InitOutputMatrix(outputSize);
             Rhino.RhinoApp.WriteLine($"Model size: {new Vector3d(inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z)}");
@@ -64,14 +72,14 @@ namespace Thesis.Help_classes
             ////Add "empty space" pattern.
             //patterns.Add(CreateEmptyPattern(patternSize));
             //probabilites[0] = 0;
-           // Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
+            Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
             for (var x = 0; x < patternMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < patternMatrix.GetLength(1); y++)
                 {
                     for (var z = 0; z < patternMatrix.GetLength(2); z++)
                     {
-                        var currentPattern = GetCurrentPattern(inputMatrix, x * patternSize, y * patternSize, z * patternSize, patternSize);
+                        var currentPattern = GetCurrentPattern(inputMatrix, x * patternSize,y *patternSize, z * patternSize, patternSize);
                         var index = patterns.ContainsPattern(currentPattern);
                         if (index < 0)
                         {
@@ -87,7 +95,24 @@ namespace Thesis.Help_classes
                     }
                 }
             }
-           
+            string test = "";
+            for (int i = 0; i < patternMatrix.GetLength(2); i++)
+            {
+                for (int j = 0; j < patternMatrix.GetLength(1); j++)
+                {
+                    for (int k = 0; k < patternMatrix.GetLength(0); k++)
+                    {
+                        test += patternMatrix[k, j, i].ToString();
+                        test += " ";
+                    }
+                    test += Environment.NewLine;
+                }
+                test += "--------------";
+                test += Environment.NewLine;
+            }
+
+            Rhino.RhinoApp.WriteLine(test);
+
         }
 
         private void InitNeighboursMap()
@@ -138,51 +163,53 @@ namespace Thesis.Help_classes
 
                         if (y - 1 >= 0)
                         {
-                            NeighboursMap[currentPattern][Coord3D.Back].Add(patternMatrix[x, y - 1, z]);
-                        }
-                        else
-                        {
-                            if (Periodic)
-                            {
-                                NeighboursMap[currentPattern][Coord3D.Back]
-                                    .Add(patternMatrix[x, patternMatrix.GetLength(1) - 1, z]);
-                            }
-                        }
-                        if (y + 1 < patternMatrix.GetLength(1))
-                        {
-                            NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y + 1, z]);
-                        }
-                        else
-                        {
-                            if (Periodic)
-                            {
-                                NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, 0, z]);
-                            }
-                        }
-
-                        if (z - 1 >= 0)
-                        {
-                            NeighboursMap[currentPattern][Coord3D.Down].Add(patternMatrix[x, y, z - 1]);
+                            NeighboursMap[currentPattern][Coord3D.Down].Add(patternMatrix[x, y - 1, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
                                 NeighboursMap[currentPattern][Coord3D.Down]
-                                    .Add(patternMatrix[x, y, patternMatrix.GetLength(2) - 1]);
+                                    .Add(patternMatrix[x, patternMatrix.GetLength(1) - 1, z]);
                             }
                         }
-                        if (z + 1 < patternMatrix.GetLength(2))
+                        if (y + 1 < patternMatrix.GetLength(1))
                         {
-                            NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, y, z + 1]);
+                            NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, y + 1, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, y, 0]);
+                                NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, 0, z]);
                             }
                         }
+                        ///////////////////////////////////////////////////////
+                        if (z - 1 >= 0)
+                        {
+                            NeighboursMap[currentPattern][Coord3D.Back].Add(patternMatrix[x, y, z - 1]);
+                        }
+                        else
+                        {
+                            if (Periodic)
+                            {
+                                NeighboursMap[currentPattern][Coord3D.Back]
+                                    .Add(patternMatrix[x, y, patternMatrix.GetLength(2) - 1]);
+                            }
+                        }
+                        if (z + 1 < patternMatrix.GetLength(2))
+                        {
+                            NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y, z + 1]);
+                        }
+                        else
+                        {
+                            if (Periodic)
+                            {
+                                NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y, 0]);
+                            }
+                        }
+
+
                     }
                 }
             }
@@ -248,13 +275,13 @@ namespace Thesis.Help_classes
 
 
 
-            foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-            {
-                foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-                    Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-                        + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
+            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
+            //{
+            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
+            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
+            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
 
-            }
+            //}
 
         }
 
