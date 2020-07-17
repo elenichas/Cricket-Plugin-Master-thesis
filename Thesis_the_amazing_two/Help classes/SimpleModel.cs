@@ -41,20 +41,37 @@ namespace Thesis.Help_classes
             {
                 //this method calls the CheckAddNeighbors method for 
                 //every pattern and every other pattern in pattern matrix
-                DetectNeighbours();
+                //  causing problems, commented it out!!!!!!!!!!!!!!!!!!!!!!!!
+               // DetectNeighbours();
 
             }
-            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-            //{
-            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
+            foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
+            {
+                foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
+                    Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
+                        + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
 
-            //}
+            }
 
             InitOutputMatrix(outputSize);
             Rhino.RhinoApp.WriteLine($"Model size: {new Vector3d(inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z)}");
             Rhino.RhinoApp.WriteLine("Model Ready!");
+        }
+        private static int[,,] CreateEmptyPattern(int pSize)
+        {
+            var res = new int[pSize, pSize, pSize];
+
+            for (var i = 0; i < res.GetLength(0); i++)
+            {
+                for (var j = 0; j < res.GetLength(1); j++)
+                {
+                    for (var k = 0; k < res.GetLength(2); k++)
+                    {
+                        res[i, j, k] = 0;
+                    }
+                }
+            }
+            return res;
         }
 
         protected override void Init(InputModel inputModel, int patternSize, bool periodic)
@@ -70,8 +87,9 @@ namespace Thesis.Help_classes
             inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Color);
 
             ////Add "empty space" pattern.
-            //patterns.Add(CreateEmptyPattern(patternSize));
-            //probabilites[0] = 0;
+            patterns.Add(CreateEmptyPattern(patternSize));
+            probabilites[0] = 0;
+
             Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
             for (var x = 0; x < patternMatrix.GetLength(0); x++)
             {
@@ -95,23 +113,23 @@ namespace Thesis.Help_classes
                     }
                 }
             }
-            string test = "";
-            for (int i = 0; i < patternMatrix.GetLength(2); i++)
-            {
-                for (int j = 0; j < patternMatrix.GetLength(1); j++)
-                {
-                    for (int k = 0; k < patternMatrix.GetLength(0); k++)
-                    {
-                        test += patternMatrix[k, j, i].ToString();
-                        test += " ";
-                    }
-                    test += Environment.NewLine;
-                }
-                test += "--------------";
-                test += Environment.NewLine;
-            }
+        //    string test = "";
+        //    for (int i = 0; i < patternMatrix.GetLength(2); i++)
+        //    {
+        //        for (int j = 0; j < patternMatrix.GetLength(1); j++)
+        //        {
+        //            for (int k = 0; k < patternMatrix.GetLength(0); k++)
+        //            {
+        //                test += patternMatrix[k, j, i].ToString();
+        //                test += " ";
+        //            }
+        //            test += Environment.NewLine;
+        //        }
+        //        test += "--------------";
+        //        test += Environment.NewLine;
+        //    }
 
-            Rhino.RhinoApp.WriteLine(test);
+        //    Rhino.RhinoApp.WriteLine(test);
 
         }
 
@@ -184,7 +202,7 @@ namespace Thesis.Help_classes
                                 NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, 0, z]);
                             }
                         }
-                        ///////////////////////////////////////////////////////
+
                         if (z - 1 >= 0)
                         {
                             NeighboursMap[currentPattern][Coord3D.Back].Add(patternMatrix[x, y, z - 1]);
@@ -208,11 +226,10 @@ namespace Thesis.Help_classes
                                 NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y, 0]);
                             }
                         }
-
-
                     }
                 }
             }
+
 
             //Eliminate duplicates in the neighbours map.
             for (var i = 0; i < patterns.Count; i++)
@@ -223,7 +240,7 @@ namespace Thesis.Help_classes
                 }
             }
 
-            // Add the empty space in case a pattern has no neighbour.  
+            //// Add the empty space in case a pattern has no neighbour.  
             for (var i = 0; i < patterns.Count; i++)
             {
                 foreach (var direction in Directions)
@@ -233,19 +250,24 @@ namespace Thesis.Help_classes
                 }
             }
 
- 
+            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
+            //{
+            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
+            //        Debug.LogFormat("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
+            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
+            //}
+
         }
 
         private void DetectNeighbours()
         {
-            
+
             foreach (var pattern in patternMatrix)
-            {             
-            
+            {
                 foreach (var otherPattern in patternMatrix)
                 {
                     CheckAddNeighbour(pattern, otherPattern);
-                    
+
                 }
             }
 
@@ -258,19 +280,18 @@ namespace Thesis.Help_classes
 
             if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Left) && !NeighboursMap[pattern][Coord3D.Left].Contains(otherPattern))
                 NeighboursMap[pattern][Coord3D.Left].Add(otherPattern);
-
             if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Right) && !NeighboursMap[pattern][Coord3D.Right].Contains(otherPattern))
                 NeighboursMap[pattern][Coord3D.Right].Add(otherPattern);
-
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Back) && !NeighboursMap[pattern][Coord3D.Back].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Back].Add(otherPattern);
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Forward) && !NeighboursMap[pattern][Coord3D.Forward].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Forward].Add(otherPattern);
 
             if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Down) && !NeighboursMap[pattern][Coord3D.Down].Contains(otherPattern))
                 NeighboursMap[pattern][Coord3D.Down].Add(otherPattern);
             if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Up) && !NeighboursMap[pattern][Coord3D.Up].Contains(otherPattern))
                 NeighboursMap[pattern][Coord3D.Up].Add(otherPattern);
+
+            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Back) && !NeighboursMap[pattern][Coord3D.Back].Contains(otherPattern))
+                NeighboursMap[pattern][Coord3D.Back].Add(otherPattern);
+            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Forward) && !NeighboursMap[pattern][Coord3D.Forward].Contains(otherPattern))
+                NeighboursMap[pattern][Coord3D.Forward].Add(otherPattern);
 
 
 
@@ -287,7 +308,8 @@ namespace Thesis.Help_classes
 
 
         public override void Observe()
-        {           
+        {
+            Rhino.RhinoApp.WriteLine("I observed");
             //Build a list of nodes that have not been collapsed to a definite state.
             //A node is collapsabel when for the nodes x y z the output matrix is not 0 or 1
             // i think the output matrix are the posible x y z of the node that has not yet collapsed
@@ -299,20 +321,40 @@ namespace Thesis.Help_classes
                 Contradiction = true;
                 return;
             }
-             var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
+            var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
+            //var nodeCoords = collapsableNodes[0];
 
             //instead of start random start from the middle of the output grid
            // var nodeCoords = GetCollapsableNodeMiddle();
          
-            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z];
+            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
+            //Rhino.RhinoApp.WriteLine("the node at" + nodeCoords.X.ToString() + nodeCoords.Y.ToString() + nodeCoords.Z.ToString());
+            //Rhino.RhinoApp.WriteLine("has these available states:");
+           
 
             if (ProbabilisticModel)
             {
+                //Rhino.RhinoApp.WriteLine("availableNodeStatesbefore");
+                //foreach (int state in availableNodeStates)
+                //{
+
+                //    Rhino.RhinoApp.Write(state.ToString());
+                //}
 
                 //Eliminate all duplicates from the list of possible states.
                 //why does he shuffle the list?
                 //also there are no duplicates i think...
                 availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
+                //availableNodeStates = availableNodeStates.Shuffle().ToList();
+                //Rhino.RhinoApp.WriteLine("---------------------");
+
+                //Rhino.RhinoApp.WriteLine("availableNodeStatesafter");
+                //foreach (int state in availableNodeStates)
+                //{
+                //
+                //    Rhino.RhinoApp.Write(state.ToString());
+                //}
+
 
                 //Choose a state according to the probability distribution of the states in the input model.
                 double runningTotal = 0;
@@ -361,7 +403,8 @@ namespace Thesis.Help_classes
 
                 //Get the list of the allowed neighbours of the current node
                 var nghbrsMaps = outputMatrix[current.X, current.Y, current.Z].Select(possibleElement => NeighboursMap[possibleElement]).ToList();
-
+               
+              
                 var allowedNghbrs = nghbrsMaps.SelectMany(dict => dict)
                     .ToLookup(pair => pair.Key, pair => pair.Value)
                     .ToDictionary(group => group.Key, group => group.SelectMany(list => list).ToList());
@@ -433,7 +476,9 @@ namespace Thesis.Help_classes
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
 
-                        var currentPattern = patterns[outputMatrix[x, y, z].First()];
+                        // check if patterns assigned, if not return pattern zero
+                         var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First():0];
+                        //var currentPattern = patterns[outputMatrix[x, y, z].First()];
                         for (var i = 0; i < currentPattern.GetLength(0); i++)
                         {
                             for (var j = 0; j < currentPattern.GetLength(1); j++)

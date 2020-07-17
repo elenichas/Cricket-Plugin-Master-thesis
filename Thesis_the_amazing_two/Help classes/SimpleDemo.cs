@@ -50,6 +50,7 @@ namespace Thesis.Help_classes
         public void GenerateOutputOnDemand()
         {
                 Model.Observe();
+            
         }
 
         public void DisplayOutput()

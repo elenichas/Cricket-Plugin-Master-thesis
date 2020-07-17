@@ -118,7 +118,6 @@ namespace Thesis.Help_classes
             int endY2 = pattern.GetLength(1);
             int endZ2 = pattern.GetLength(2);
 
-
             if (side.Equals(Coord3D.Left))
             {
 

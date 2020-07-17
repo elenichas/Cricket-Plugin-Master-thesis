@@ -46,6 +46,8 @@ namespace Thesis.Components
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
             pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("PossibilitiesCount", "PC", "The number of possibilities remaining at each node", GH_ParamAccess.list);
+            pManager.AddGenericParameter("UniquePatters", "P", "The Patterns", GH_ParamAccess.list);
         }
 
 
@@ -80,6 +82,7 @@ namespace Thesis.Components
 
             if (Reset)
             {
+                InputVoxels = new List<Voxel>();
                 //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
                 //we flipt the y and z because the code is written in unity logic
                 for (int i = 0; i < InputBoxes.Count; i++)
@@ -92,13 +95,53 @@ namespace Thesis.Components
                 demo = new SimpleDemo(inSize, outSize, InputVoxels, Pattern_Size, Probabilistic, Periodic);
                 demo.ClearModel();
             }
-            
-                
+            List<int> PossibilitiesCount = new List<int>();
+            List<string> PossibilitiesCountName = new List<string>();
+            var UniquePatterns = new List<string>();
+
+            if (!demo.Model.GenerationFinished)
+            {
                 demo.GenerateOutputOnDemand();
+                var matrix = demo.Model.outputMatrix;
+                for (var x = 0; x < matrix.GetLength(0); x++)
+                {
+                    for (var y = 0; y < matrix.GetLength(1); y++)
+                    {
+                        for (var z = 0; z < matrix.GetLength(2); z++)
+                        {
+                            PossibilitiesCount.Add(matrix[x, y, z].Count);
+                            var possb = String.Join(",", matrix[x, y, z]);
+                            var nodeName = String.Format("{0},{1},{2}", x, y, z);
+                            PossibilitiesCountName.Add(nodeName + ";" + possb);
+                        }
+                    }
+                }
+
+                var patterns = demo.Model.patterns;
+                
+                foreach (var pattern in patterns)
+                {
+                    var patternList = new List<int>();
+                    for (var x = 0; x < pattern.GetLength(0); x++)
+                    {
+                        for (var y = 0; y < pattern.GetLength(1); y++)
+                        {
+                            for (var z = 0; z < 1; z++)
+                            {
+                                patternList.Add(pattern[x, y, z]);
+                            }
+                        }
+                    }
+                    UniquePatterns.Add(String.Join(",", patternList));
+                }
+
+                //PossibilitiesCount = demo.Model.outputMatrix.Cast<List<int>>().Select(x => x.Count).ToList();
+            }
+            else { Rhino.RhinoApp.WriteLine($"Model finished"); }
 
             var Output_voxels = new List<Voxel>();
 
-           Output_voxels = demo.GetOutput();
+            Output_voxels = demo.GetOutput();
 
             //I will get the colors form this one
             var rawOutput = demo.Model.GetOutput();
@@ -130,7 +173,14 @@ namespace Thesis.Components
                 var st = (kvp.Key.ToString() + "--->" + (Math.Truncate(1000 * kvp.Value) / 1000).ToString());
                 Prob.Add(st);
             }
-            DA.SetDataList(3, Prob);
+
+
+            //DA.SetDataList(3, Prob);
+            DA.SetDataList(3, PossibilitiesCountName);
+            DA.SetDataList(4, PossibilitiesCount);
+            DA.SetDataList(5, UniquePatterns);
+
+
         }
 
         /// <summary>
