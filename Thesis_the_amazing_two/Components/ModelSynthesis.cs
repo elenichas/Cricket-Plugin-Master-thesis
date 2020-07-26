@@ -20,7 +20,7 @@ namespace Thesis
         }
         public ModelSynthesis()
           : base("Model Synthesis", "Model Synthesis",
-              "does the model synthesis",
+              "3D implementation of the wfc algorithm",
               "Thesis", "Synthesis")
         {
         }
@@ -34,7 +34,8 @@ namespace Thesis
             pManager.AddVectorParameter("Output Size", "OP", "Size in XYZ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Probabilistic", "PR", " ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Periodic", "PE", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", "Generate?", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Generate", "G", " ", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Fixed Corners", "FC", " ", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -46,12 +47,14 @@ namespace Thesis
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
             pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Messages", "M", "Message display", GH_ParamAccess.list);
         }
 
 
         List<Box> OutBoxes2 = new List<Box>();
         List<int> OutValues = new List<int>();
         List<string> Prob = new List<string>();
+        public static  bool FixedCorners ;
 
 
         protected override void SolveInstance(IGH_DataAccess DA)
@@ -67,6 +70,7 @@ namespace Thesis
             bool Probabilistic = true;
             bool Periodic = true;
            
+
             int Pattern_Size = 0;
 
             if (!DA.GetDataList(0,  InputBoxes)) return;
@@ -77,9 +81,10 @@ namespace Thesis
             if (!DA.GetData(5, ref Probabilistic)) return;
             if (!DA.GetData(6, ref Periodic)) return;
             if (!DA.GetData(7, ref Generate)) return;
+            if (!DA.GetData(8, ref FixedCorners)) return;
 
-            //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
-            //we flipt the y and z because the code is written in unity logic
+            //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value
+          
             for (int i = 0; i < InputBoxes.Count; i++)
             {
               int val = InputValues[i];              
@@ -89,14 +94,20 @@ namespace Thesis
             }
 
             var demo = new SimpleDemo(inSize, outSize, InputVoxels, Pattern_Size, Probabilistic, Periodic);
-            
+
+            string mes = " ";
             if (Generate)
             {
 
                 demo.ClearModel();
                 demo.GenerateOutput();
-                Rhino.RhinoApp.WriteLine(demo.Model.GenerationFinished.ToString());
+                mes =demo.message;
+
+
+                //Rhino.RhinoApp.WriteLine(demo.Model.GenerationFinished.ToString());
             }
+            DA.SetData(4, mes);
+            
             var Output_voxels = new List<Voxel>();
            
             if (demo.Model.GenerationFinished)

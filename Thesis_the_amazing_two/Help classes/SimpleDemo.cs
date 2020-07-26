@@ -16,6 +16,8 @@ namespace Thesis.Help_classes
 
         public  static int[,,] output;
 
+        public string message;
+
         public SimpleDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic) 
         { 
             //from this model we get our input
@@ -28,10 +30,12 @@ namespace Thesis.Help_classes
             Model = new SimpleModel(model, pattern_Size, outputSizeInCoord, periodic, false, probabilistic);
         }
 
+        
         public void GenerateOutput()
         {
+            
             var Gen = 0;
-            while( (!Model.GenerationFinished)&&(Gen<200))
+            while( (!Model.GenerationFinished)&&(Gen<500))
             {
                 
                 Model.Observe();
@@ -40,19 +44,19 @@ namespace Thesis.Help_classes
 
                if (Model.Contradiction)
                {
-                   Rhino.RhinoApp.WriteLine($"I failed after {Model.NumGen} iterations!");
+                   message += "I failed after " + Gen + " iterations";
                    Model.Clear();
                }
     
             }
-            Rhino.RhinoApp.WriteLine($"I am done after {Model.NumGen} iterations!");
+            message += "I am done after " + Gen + " iterations";
         }
         public void GenerateOutputOnDemand()
         {
                 Model.Observe();
             if (Model.Contradiction)
             {
-                Rhino.RhinoApp.WriteLine($"I failed after {Model.NumGen} iterations!");
+                message += "I failed after " + Model.NumGen + " iterations";
             }
 
         }
@@ -65,7 +69,7 @@ namespace Thesis.Help_classes
         public void ClearModel()
         {
             Model.Clear();
-            Rhino.RhinoApp.WriteLine("Model cleared!");
+            message ="Model cleared";
         }
 
         public List<Voxel> GetOutput()
