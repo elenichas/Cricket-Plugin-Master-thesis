@@ -25,7 +25,7 @@ namespace Thesis.Help_classes
             var outputSizeInCoord = new Coord3D((int)outSize.X, (int)outSize.Y, (int)outSize.Z);
 
             //from this model we will get our output
-            Model = new SimpleModel(model, pattern_Size, outputSizeInCoord, periodic,true, probabilistic);
+            Model = new SimpleModel(model, pattern_Size, outputSizeInCoord, periodic, false, probabilistic);
         }
 
         public void GenerateOutput()
@@ -50,7 +50,11 @@ namespace Thesis.Help_classes
         public void GenerateOutputOnDemand()
         {
                 Model.Observe();
-            
+            if (Model.Contradiction)
+            {
+                Rhino.RhinoApp.WriteLine($"I failed after {Model.NumGen} iterations!");
+            }
+
         }
 
         public void DisplayOutput()

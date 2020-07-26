@@ -45,13 +45,13 @@ namespace Thesis.Help_classes
                // DetectNeighbours();
 
             }
-            foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-            {
-                foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-                    Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-                        + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
+            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
+            //{
+            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
+            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
+            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
 
-            }
+            //}
 
             InitOutputMatrix(outputSize);
             Rhino.RhinoApp.WriteLine($"Model size: {new Vector3d(inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z)}");
@@ -318,19 +318,21 @@ namespace Thesis.Help_classes
             //Pick a random node from the collapsible nodes.
             if (collapsableNodes.Count == 0)
             {
+                Rhino.RhinoApp.WriteLine("contradiction true: from Observe");
                 Contradiction = true;
                 return;
             }
-            var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
-            //var nodeCoords = collapsableNodes[0];
+            //var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
+            var nodeCoords = collapsableNodes[0];
 
             //instead of start random start from the middle of the output grid
            // var nodeCoords = GetCollapsableNodeMiddle();
          
-            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
+           // var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
+            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].ToList();
             //Rhino.RhinoApp.WriteLine("the node at" + nodeCoords.X.ToString() + nodeCoords.Y.ToString() + nodeCoords.Z.ToString());
             //Rhino.RhinoApp.WriteLine("has these available states:");
-           
+
 
             if (ProbabilisticModel)
             {
@@ -431,9 +433,10 @@ namespace Thesis.Help_classes
                     }
 
                     
-
+                    
                     //Count the states before the propagation.
                     var statesBefore = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
+                   // var restate = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z];
                     //Rhino.RhinoApp.WriteLine(statesBefore.ToString()+"--> before");
 
                     //Eliminate neighbours that are not allowed from the output matrix
@@ -448,8 +451,12 @@ namespace Thesis.Help_classes
                     // TODO Add a backtrack recovery system to remedy the contradictions.
                     if (outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count == 0)
                     {
+                        // restate.Clear();
+                        Rhino.RhinoApp.WriteLine("contradiction true: from Propagate");
+
                         Contradiction = true;
                         return;
+                       // outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z] = restate;
                     }
 
                     //Queue it up in order to spread the info to its neighbours and mark it as visited.
@@ -476,8 +483,8 @@ namespace Thesis.Help_classes
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
 
-                        // check if patterns assigned, if not return pattern zero
-                         var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First():0];
+                        // check if patterns assigned, if not return pattern zero (make sure that pattern zero is empty patter)
+                         var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First() : 0];
                         //var currentPattern = patterns[outputMatrix[x, y, z].First()];
                         for (var i = 0; i < currentPattern.GetLength(0); i++)
                         {
