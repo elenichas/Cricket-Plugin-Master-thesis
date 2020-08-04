@@ -86,11 +86,11 @@ namespace Thesis.Help_classes
 
             inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Color);
 
-            ////Add "empty space" pattern.
-            patterns.Add(CreateEmptyPattern(patternSize));
-            probabilites[0] = 0;
+            //////Add "empty space" pattern.
+            //patterns.Add(CreateEmptyPattern(patternSize));
+            //probabilites[0] = 0;
 
-           // Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
+            // Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
             for (var x = 0; x < patternMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < patternMatrix.GetLength(1); y++)
@@ -310,8 +310,6 @@ namespace Thesis.Help_classes
         public override void Observe()
         {
 
-           
-            
             //Rhino.RhinoApp.WriteLine("I observed");
             //Build a list of nodes that have not been collapsed to a definite state.
             //A node is collapsabel when for the nodes x y z the output matrix is not 0 or 1
@@ -322,29 +320,35 @@ namespace Thesis.Help_classes
             //MAKE THE CORNER ALWAYS A CORNER
             if ((NumGen == 0) && (ModelSynthesis.FixedCorners ==true))
             {
-                Rhino.RhinoApp.WriteLine("I am inside");
+                Rhino.RhinoApp.WriteLine("I am inside "+ NumGen);
                 var nodeCoordsfirst = collapsableNodes[0];
                 var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
                 outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[1] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
-
-                var nodeCoordslast = collapsableNodes[collapsableNodes.Count - 1];
-                var availableNodeStateslast = outputMatrix[nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z].ToList();
-                outputMatrix.SetValue(new List<int>() { availableNodeStateslast[availableNodeStateslast.Count - 1] }, nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z);
                 Propagate(nodeCoordsfirst);
-                Propagate(nodeCoordslast);
+                //var nodeCoordsfirst = collapsableNodes[8];
+                //var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
+                //outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[0] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
+                //Propagate(nodeCoordsfirst);
+
+
+                //var nodeCoordslast = collapsableNodes.Last();
+                //var availableNodeStateslast = outputMatrix[nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z].ToList();
+                //outputMatrix.SetValue(new List<int>() { availableNodeStateslast.Last()}, nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z);
+
+                //Propagate(nodeCoordslast);
             }
 
             //Pick a random node from the collapsible nodes.
             if (collapsableNodes.Count == 0)
             {
-                //Rhino.RhinoApp.WriteLine("contradiction true: from Observe");
+                Rhino.RhinoApp.WriteLine("contradiction true: from Observe");
                 Contradiction = true;
                 return;
             }
             var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
            // var nodeCoords = collapsableNodes[0];
          
-           // var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
+          // var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
             var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].ToList();
           
 
@@ -359,8 +363,9 @@ namespace Thesis.Help_classes
                 //}
 
                 //Eliminate all duplicates from the list of possible states.
-              
-                availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
+
+                //availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
+                availableNodeStates = availableNodeStates.ToList().Shuffle().ToList();
                 //availableNodeStates = availableNodeStates.Shuffle().ToList();
                 //Rhino.RhinoApp.WriteLine("---------------------");
 
@@ -394,10 +399,10 @@ namespace Thesis.Help_classes
             }
             else
             {
-                //Collapse it to a random definite state.
-
+              
                 outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
                // outputMatrix.SetValue(new List<int>() { availableNodeStates[0] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
+              
             }
      
 
@@ -465,7 +470,7 @@ namespace Thesis.Help_classes
                     if (outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count == 0)
                     {
                         
-                        //Rhino.RhinoApp.WriteLine("contradiction true: from Propagate");
+                        Rhino.RhinoApp.WriteLine("contradiction true: from Propagate");
 
                         Contradiction = true;
                         return;
