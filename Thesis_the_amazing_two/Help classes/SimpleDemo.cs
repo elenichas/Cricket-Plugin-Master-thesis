@@ -5,6 +5,7 @@ using Rhino.Geometry;
 
 namespace Thesis.Help_classes
 {
+    //The simple demo is the the script that calls the basic methods that generate the output,display and clear it
     public class SimpleDemo
     {
 
@@ -31,9 +32,9 @@ namespace Thesis.Help_classes
         }
 
         
+        //this method is used by the model Synthesis component
         public void GenerateOutput()
         {
-            
             var Gen = 0;
             while( (!Model.GenerationFinished)&&(Gen<500))
             {
@@ -44,19 +45,21 @@ namespace Thesis.Help_classes
 
                if (Model.Contradiction)
                {
-                   message += "I failed after " + Gen + " iterations";
+                   message = "I failed after " + Gen + " iterations";
                    Model.Clear();
                }
     
             }
-            message += "I am done after " + Gen + " iterations";
+            message = "I am done after " + Gen + " iterations";
         }
+
+        //this method is used by the model Synthesis2 component that needs a timer to update
         public void GenerateOutputOnDemand()
         {
                 Model.Observe();
             if (Model.Contradiction)
             {
-                message += "I failed after " + Model.NumGen + " iterations";
+                message = "I failed after " + Model.NumGen + " iterations";
             }
 
         }

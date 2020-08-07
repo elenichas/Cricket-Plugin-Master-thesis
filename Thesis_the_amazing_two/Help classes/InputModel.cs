@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thesis.Help_classes
 {
+    //The input model is a list of voxels and has a size  in x,y,z  direction (Coord)
     public struct InputModel
     {
         public Coord3D Size;

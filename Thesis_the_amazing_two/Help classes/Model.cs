@@ -36,8 +36,7 @@ namespace Thesis.Help_classes
         protected abstract void Propagate(Coord3D startPoint);
 
         public abstract int[,,] GetOutput();
-
-        //Auxiliary methods.
+ 
 
         protected static int[,,] GetCurrentPattern(int[,,] matrix, int x, int y, int z, int patternSize)
         {
@@ -88,7 +87,7 @@ namespace Thesis.Help_classes
                 {
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
-                        if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)                            
+                         if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)                            
                            collapsableNodes.Add(new Coord3D(x, y, z));                      
                     }
                 }
@@ -98,13 +97,6 @@ namespace Thesis.Help_classes
         }
 
 
-        protected Coord3D GetCollapsableNodeMiddle()
-        {
-            
-           Coord3D collapsableNodeM = new Coord3D(outputMatrix.GetLength(0)/2, outputMatrix.GetLength(1)/2, outputMatrix.GetLength(2)/2);
-
-            return collapsableNodeM;
-        }
         protected bool CheckIfFinished()
         {
             //the output matrix includes all the nodes

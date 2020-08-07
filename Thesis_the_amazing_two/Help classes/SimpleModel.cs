@@ -32,15 +32,12 @@ namespace Thesis.Help_classes
 
             Init(inputModel, patternSize, periodic);
 
-            //Create a data structure for every pattern in patterns,for every direction(6 possible)-----> a list of possible patterns
-            //(int = pattern) --->(coord(ex. 100))--->List<int> patterns
-            //for every pattern for every coord(left,right,up...) what are the possible patterns
+            //NeigboursMap is a data structure that stores the allowed neighboring patterns for every pattern and for every direction
             InitNeighboursMap();
 
             if (addNeighbours)
             {
-                //this method calls the CheckAddNeighbors method for 
-                //every pattern and every other pattern in pattern matrix
+ 
                 //  causing problems, commented it out!!!!!!!!!!!!!!!!!!!!!!!!
                // DetectNeighbours();
 
@@ -54,8 +51,7 @@ namespace Thesis.Help_classes
             //}
 
             InitOutputMatrix(outputSize);
-           // Rhino.RhinoApp.WriteLine($"Model size: {new Vector3d(inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z)}");
-           // Rhino.RhinoApp.WriteLine("Model Ready!");
+
         }
         private static int[,,] CreateEmptyPattern(int pSize)
         {
@@ -90,7 +86,6 @@ namespace Thesis.Help_classes
             //patterns.Add(CreateEmptyPattern(patternSize));
             //probabilites[0] = 0;
 
-            // Rhino.RhinoApp.WriteLine(patternMatrix.GetLength(0) + " x__" + patternMatrix.GetLength(1) + " y__" + patternMatrix.GetLength(2) + " z");
             for (var x = 0; x < patternMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < patternMatrix.GetLength(1); y++)
@@ -113,23 +108,7 @@ namespace Thesis.Help_classes
                     }
                 }
             }
-        //    string test = "";
-        //    for (int i = 0; i < patternMatrix.GetLength(2); i++)
-        //    {
-        //        for (int j = 0; j < patternMatrix.GetLength(1); j++)
-        //        {
-        //            for (int k = 0; k < patternMatrix.GetLength(0); k++)
-        //            {
-        //                test += patternMatrix[k, j, i].ToString();
-        //                test += " ";
-        //            }
-        //            test += Environment.NewLine;
-        //        }
-        //        test += "--------------";
-        //        test += Environment.NewLine;
-        //    }
-
-        //    Rhino.RhinoApp.WriteLine(test);
+      
 
         }
 
@@ -259,82 +238,66 @@ namespace Thesis.Help_classes
 
         }
 
-        private void DetectNeighbours()
-        {
 
-            foreach (var pattern in patternMatrix)
-            {
-                foreach (var otherPattern in patternMatrix)
-                {
-                    CheckAddNeighbour(pattern, otherPattern);
+        //This method was allowing  incorect adjacencies
+        
+            //private void DetectNeighbours()
+        //{
 
-                }
-            }
+        //    foreach (var pattern in patternMatrix)
+        //    {
+        //        foreach (var otherPattern in patternMatrix)
+        //        {
+        //            CheckAddNeighbour(pattern, otherPattern);
 
-        }
+        //        }
+        //    }
 
-        private void CheckAddNeighbour(int pattern, int otherPattern)
-        {
-            var patternStruct = patterns[pattern];
-            var otherPatternStruct = patterns[otherPattern];
+        //}
 
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Left) && !NeighboursMap[pattern][Coord3D.Left].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Left].Add(otherPattern);
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Right) && !NeighboursMap[pattern][Coord3D.Right].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Right].Add(otherPattern);
+        //private void CheckAddNeighbour(int pattern, int otherPattern)
+        //{
+        //    var patternStruct = patterns[pattern];
+        //    var otherPatternStruct = patterns[otherPattern];
 
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Down) && !NeighboursMap[pattern][Coord3D.Down].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Down].Add(otherPattern);
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Up) && !NeighboursMap[pattern][Coord3D.Up].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Up].Add(otherPattern);
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Left) && !NeighboursMap[pattern][Coord3D.Left].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Left].Add(otherPattern);
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Right) && !NeighboursMap[pattern][Coord3D.Right].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Right].Add(otherPattern);
 
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Back) && !NeighboursMap[pattern][Coord3D.Back].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Back].Add(otherPattern);
-            if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Forward) && !NeighboursMap[pattern][Coord3D.Forward].Contains(otherPattern))
-                NeighboursMap[pattern][Coord3D.Forward].Add(otherPattern);
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Down) && !NeighboursMap[pattern][Coord3D.Down].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Down].Add(otherPattern);
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Up) && !NeighboursMap[pattern][Coord3D.Up].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Up].Add(otherPattern);
 
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Back) && !NeighboursMap[pattern][Coord3D.Back].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Back].Add(otherPattern);
+        //    if (patternStruct.FitsPattern(otherPatternStruct, Coord3D.Forward) && !NeighboursMap[pattern][Coord3D.Forward].Contains(otherPattern))
+        //        NeighboursMap[pattern][Coord3D.Forward].Add(otherPattern);
 
-
-
-            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-            //{
-            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
-
-            //}
-
-        }
+        //}
 
 
         public override void Observe()
         {
-
-            //Rhino.RhinoApp.WriteLine("I observed");
-            //Build a list of nodes that have not been collapsed to a definite state.
-            //A node is collapsabel when for the nodes x y z the output matrix is not 0 or 1
-            // i think the output matrix are the posible x y z of the node that has not yet collapsed
-
+            //in the begining all nodes are collapsable and all patterns all possible for all nodes
             var collapsableNodes = GetCollapsableNodes();
 
-            //MAKE THE CORNER ALWAYS A CORNER
+           //This method collapses the first node to the first pattern and can be used in floorplans when you
+           //want to ensure the floor plan will be closed with surrounding walls
+           
             if ((NumGen == 0) && (ModelSynthesis.FixedCorners ==true))
             {
-                Rhino.RhinoApp.WriteLine("I am inside "+ NumGen);
+                
                 var nodeCoordsfirst = collapsableNodes[0];
                 var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
                 outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[1] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
                 Propagate(nodeCoordsfirst);
-                //var nodeCoordsfirst = collapsableNodes[8];
-                //var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
-                //outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[0] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
-                //Propagate(nodeCoordsfirst);
 
-
+                //We can also collapse the top right corner-last node to the last pattern to make sure it is also a corner
                 //var nodeCoordslast = collapsableNodes.Last();
                 //var availableNodeStateslast = outputMatrix[nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z].ToList();
                 //outputMatrix.SetValue(new List<int>() { availableNodeStateslast.Last()}, nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z);
-
                 //Propagate(nodeCoordslast);
             }
 
@@ -346,35 +309,17 @@ namespace Thesis.Help_classes
                 return;
             }
             var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
-           // var nodeCoords = collapsableNodes[0];
-         
-          // var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
+            //var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
             var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].ToList();
           
 
 
             if (ProbabilisticModel)
             {
-                //Rhino.RhinoApp.WriteLine("availableNodeStatesbefore");
-                //foreach (int state in availableNodeStates)
-                //{
-
-                //    Rhino.RhinoApp.Write(state.ToString());
-                //}
-
+             
                 //Eliminate all duplicates from the list of possible states.
-
                 //availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
                 availableNodeStates = availableNodeStates.ToList().Shuffle().ToList();
-                //availableNodeStates = availableNodeStates.Shuffle().ToList();
-                //Rhino.RhinoApp.WriteLine("---------------------");
-
-                //Rhino.RhinoApp.WriteLine("availableNodeStatesafter");
-                //foreach (int state in availableNodeStates)
-                //{
-                //
-                //    Rhino.RhinoApp.Write(state.ToString());
-                //}
 
 
                 //Choose a state according to the probability distribution of the states in the input model.
@@ -392,20 +337,15 @@ namespace Thesis.Help_classes
                     {
                          outputMatrix.SetValue(new List<int>() { availableNodeState }, nodeCoords.X, nodeCoords.Y,
                         nodeCoords.Z);
-                        //outputMatrix.SetValue(new List<int>() { availableNodeStates[0] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
                         break;
                     }
                 }
             }
             else
-            {
-              
-                outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
-               // outputMatrix.SetValue(new List<int>() { availableNodeStates[0] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
-              
+            {            
+                outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);                   
             }
      
-
             Propagate(nodeCoords);
 
             NumGen++;
@@ -443,22 +383,17 @@ namespace Thesis.Help_classes
                     {
                         if(!Periodic) continue;
                         else
-                        {
-                            //0->n 5->m 0=result, 1->n 5->m 1=result, 4->n 5->m 4=result,-1->n 5->m 4=result, 1->n 5->m 1=result, 5->n 5->m 0=result
+                        {                    
                             nodeToBeChanged = new Coord3D(Mod(nodeToBeChanged.X, outputMatrix.GetLength(0)),
-                                Mod(nodeToBeChanged.Y, outputMatrix.GetLength(1)),
-                                Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2)));
+                            Mod(nodeToBeChanged.Y, outputMatrix.GetLength(1)),
+                            Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2)));
                         }
-
                     }
 
-                    
-                    
+                                      
                     //Count the states before the propagation.
                     var statesBefore = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
-                   // var restate = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z];
-                    //Rhino.RhinoApp.WriteLine(statesBefore.ToString()+"--> before");
-
+      
                     //Eliminate neighbours that are not allowed from the output matrix
                     var allowedNghbrsInDirection = allowedNghbrs[direction].Distinct().ToList();
                     outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z]
@@ -502,8 +437,9 @@ namespace Thesis.Help_classes
                     {
 
                         // check if patterns assigned, if not return pattern zero (make sure that pattern zero is empty patter)
-                         var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First() : 0];
-                        //var currentPattern = patterns[outputMatrix[x, y, z].First()];
+                        // var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First() : 0];
+                       
+                        var currentPattern = patterns[outputMatrix[x, y, z].First()];
                         for (var i = 0; i < currentPattern.GetLength(0); i++)
                         {
                             for (var j = 0; j < currentPattern.GetLength(1); j++)

@@ -83,8 +83,7 @@ namespace Thesis
             if (!DA.GetData(7, ref Generate)) return;
             if (!DA.GetData(8, ref FixedCorners)) return;
 
-            //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value
-          
+            //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value       
             for (int i = 0; i < InputBoxes.Count; i++)
             {
               int val = InputValues[i];              
@@ -103,8 +102,6 @@ namespace Thesis
                 demo.GenerateOutput();
                 mes =demo.message;
 
-
-                //Rhino.RhinoApp.WriteLine(demo.Model.GenerationFinished.ToString());
             }
             DA.SetData(4, mes);
             
@@ -115,7 +112,7 @@ namespace Thesis
                 Output_voxels = demo.GetOutput();
             }
 
-            //I will get the colors form this one
+            //we get the output values of the model
             var rawOutput = demo.Model.GetOutput();
 
             if (Output_voxels.Count > 0)
@@ -139,6 +136,7 @@ namespace Thesis
 
             DA.SetData(2, demo.Model.patterns.Count());
 
+            //we output the probabilities of each pattern in the input model
             Prob = new List<string>();
             foreach (KeyValuePair<int, double> kvp in demo.Model.probabilites)
             {
@@ -148,10 +146,6 @@ namespace Thesis
             DA.SetDataList(3, Prob);
         }
 
-        /// <summary>
-        /// Provides an Icon for every component that will be visible in the User Interface.
-        /// Icons need to be 24x24 pixels.
-        /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
             get
@@ -162,11 +156,7 @@ namespace Thesis
             }
         }
 
-        /// <summary>
-        /// Each component must have a unique Guid to identify it. 
-        /// It is vital this Guid doesn't change otherwise old ghx files 
-        /// that use the old ID will partially fail during loading.
-        /// </summary>
+ 
         public override Guid ComponentGuid
         {
             get { return new Guid("887674AC-7B8D-4E16-88E5-AA6F5C3573CA"); }
