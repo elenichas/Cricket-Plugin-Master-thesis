@@ -11,10 +11,16 @@ namespace Thesis.Help_classes
     {
         public static readonly Random Rnd = new Random();
         public bool ProbabilisticModel { get; protected set; }
+        
+        public bool OptimizedModel { get; protected set; }
+        public bool Maximize { get; protected set; }
+        public bool Minimize { get; protected set; }
         public bool Periodic { get; protected set; }
 
         public int[,,] patternMatrix;
         public List<int[,,]> patterns;
+
+        public List<double> OptimizableVals;
         public int PatternSize { get; set; }
         public  Dictionary<int, double> probabilites;
 
@@ -54,6 +60,24 @@ namespace Thesis.Help_classes
             }
  
             return pattern;
+        }
+        protected static double GetCurrentPatternValue(double[,,] matrix, int x, int y, int z, int patternSize)
+        {
+            var patternvalue = new double[patternSize, patternSize, patternSize];
+            for (var i = x; i < x + patternSize; i++)
+            {
+                for (var j = y; j < y + patternSize; j++)
+                {
+                    for (var k = z; k < z + patternSize; k++)
+                    {
+                        patternvalue[i - x, j - y, k - z] = matrix[i % matrix.GetLength(0), j % matrix.GetLength(1), k % matrix.GetLength(2)];
+
+                    }
+                }
+            }
+            double sum = patternvalue.Cast<double>().Sum();
+           
+            return sum;
         }
 
         protected void InitOutputMatrix(Coord3D size)

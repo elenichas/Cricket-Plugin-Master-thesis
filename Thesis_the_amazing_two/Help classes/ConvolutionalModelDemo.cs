@@ -65,6 +65,7 @@ namespace Thesis.Help_classes
             }
             message += "I am done after " + Gen + " iterations";
         }
+       
         public void GenerateOutputOnDemand()
         {
             Model.Observe();

@@ -45,7 +45,7 @@ namespace Thesis.Help_classes
                     inputModel.Size.Z - patternSize + 1];
             }
 
-            inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Color);
+            inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity);
 
 
             for (var x = 0; x < patternMatrix.GetLength(0); x++)

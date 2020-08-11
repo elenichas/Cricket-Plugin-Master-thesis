@@ -86,8 +86,8 @@ namespace Thesis
             //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value       
             for (int i = 0; i < InputBoxes.Count; i++)
             {
-              int val = InputValues[i];              
-               Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), val);
+              int identity = InputValues[i];  
+               Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), identity);
                InputVoxels.Add(vox);
                  
             }

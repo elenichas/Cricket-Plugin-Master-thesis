@@ -18,6 +18,17 @@ namespace Thesis.Help_classes
         public  static int[,,] output;
 
         public string message;
+        //public SimpleDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic, bool Optimized, bool Maximize, bool Minimize)
+        //{
+        //    from this model we get our input
+        //    InputModel model = new InputModel(new Coord3D((int)inSize.X, (int)inSize.Y, (int)inSize.Z), inputVoxels);
+
+        //    this is the size of the output model
+        //    var outputSizeInCoord = new Coord3D((int)outSize.X, (int)outSize.Y, (int)outSize.Z);
+
+        //    from this model we will get our output
+        //    Model = new SimpleModel(model, pattern_Size, outputSizeInCoord, periodic, false, probabilistic, Optimized, Maximize, Minimize);
+        //}
 
         public SimpleDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic) 
         { 
@@ -52,6 +63,26 @@ namespace Thesis.Help_classes
             }
             message = "I am done after " + Gen + " iterations";
         }
+        //public void GenerateOutputandOptimize()
+        //{
+
+        //    var Gen = 0;
+        //    while ((!Model.GenerationFinished) && (Gen < 500))
+        //    {
+
+        //        Model.ObserveAndOptimize();
+
+        //        Gen++;
+
+        //        if (Model.Contradiction)
+        //        {
+        //            message += "I failed after " + Gen + " iterations";
+        //            Model.Clear();
+        //        }
+
+        //    }
+        //    message += "I am done after " + Gen + " iterations";
+        //}
 
         //this method is used by the model Synthesis2 component that needs a timer to update
         public void GenerateOutputOnDemand()
