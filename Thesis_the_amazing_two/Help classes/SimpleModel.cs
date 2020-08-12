@@ -42,60 +42,12 @@ namespace Thesis.Help_classes
                // DetectNeighbours();
 
             }
-            //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-            //{
-            //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-            //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-            //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
-
-            //}
+    
 
             InitOutputMatrix(outputSize);
 
         }
-        //public SimpleModel(InputModel inputModel, int patternSize, Coord3D outputSize, bool periodic, bool addNeighbours, bool probabilisticModel,bool Optimizedmodel, bool Maximizemodel, bool Minimizemodel)
-        //{
-        //    NeighboursMap = new Dictionary<int, Dictionary<Coord3D, List<int>>>();
-        //    //defines if the input voxel model is periodic or not (i.e. if it can be "looped over" or not)
-        //    Periodic = periodic;
-
-        //    //defines if the code should use the pattern distribution in the input voxel model to create the output model
-        //    //If it is set to false, the pattern is randomly chosen.
-        //    ProbabilisticModel = probabilisticModel;
-        //    OptimizedModel= Optimizedmodel;
-        //    Maximize = Maximizemodel;
-        //    Minimize = Minimizemodel;
-        //    PatternSize = patternSize;
-
-        //    //the number of times we "observe"
-        //    NumGen = 0;
-
-        //    //the x,y,z dimensions of the output model
-        //    OutputSize = outputSize;
-
-        //    Init(inputModel, patternSize, periodic);
-
-        //    //NeigboursMap is a data structure that stores the allowed neighboring patterns for every pattern and for every direction
-        //    InitNeighboursMap();
-
-        //    if (addNeighbours)
-        //    {
-
-        //        //  causing problems, commented it out!!!!!!!!!!!!!!!!!!!!!!!!
-        //        // DetectNeighbours();
-
-        //    }
-        //    //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
-        //    //{
-        //    //    foreach (KeyValuePair<Coord3D, List<int>> hhh in kvp.Value)
-        //    //        Rhino.RhinoApp.WriteLine("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
-        //    //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
-
-        //    //}
-
-        //    InitOutputMatrix(outputSize);
-
-        //}
+    
         
         private static int[,,] CreateEmptyPattern(int pSize)
         {
@@ -127,9 +79,7 @@ namespace Thesis.Help_classes
             //the matrix with the voxels identities (who am I as a tile?)
             inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity);
 
-            //the matrixwith the values each voxel carries and we wont to optimize
-            inputModel.Voxels.ForEach(voxel => OptimizeMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Value);
-
+    
             //////Add "empty space" pattern.
             //patterns.Add(CreateEmptyPattern(patternSize));
             //probabilites[0] = 0;
@@ -404,93 +354,7 @@ namespace Thesis.Help_classes
 
             NumGen++;
         }
-        //public void ObserveAndOptimize()
-        //{
-        //    //in the begining all nodes are collapsable and all patterns all possible for all nodes
-        //    var collapsableNodes = GetCollapsableNodes();
-            
-        //    int picked = 0;
-
-        //    //if the output matrix is not instantiated and there are no collapsable nodes throw an error
-        //    if (collapsableNodes.Count == 0)
-        //    {
-        //        Rhino.RhinoApp.WriteLine("contradiction true: from Observe");
-        //        Contradiction = true;
-        //        return;
-        //    }
-        //    //we pick a random node to collapse
-        //    var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
-        //   // var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].Except(new[] { 0 }).ToList();
-        //    var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].ToList();
-
-
-
-        //    if (ProbabilisticModel)
-        //    {
-
-        //        //Eliminate all duplicates from the list of possible states.
-        //        //availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
-        //        availableNodeStates = availableNodeStates.ToList().Shuffle().ToList();
-                
-
-        //        //Choose a state according to the probability distribution of the states in the input model.
-        //        double runningTotal = 0;
-        //        var totalProb = probabilites.Select(x => x)
-        //            .Where(x => availableNodeStates.Contains(x.Key))
-        //            .Sum(x => x.Value);
-        //        var rndNumb = Rnd.NextDouble() * totalProb;
-
-
-        //        foreach (var availableNodeState in availableNodeStates)
-        //        {
-        //            runningTotal += probabilites[availableNodeState];
-
-        //            if (runningTotal > rndNumb)
-        //            {
-        //                outputMatrix.SetValue(new List<int>() { availableNodeState }, nodeCoords.X, nodeCoords.Y,
-        //               nodeCoords.Z);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    else if (OptimizedModel)
-        //    {
-        //        var values_to_optimize = new Dictionary<int, double>();
-                
-               
-        //        foreach (int state in availableNodeStates)
-        //        {
-        //            //The dictionary has the patterns and the values assosiated with them
-
-        //            values_to_optimize.Add(state, OptimizableVals[state]);
-                   
-        //        }
-        //        //pick the one with the minimum value
-        //        if (Maximize)
-        //        {
-        //            //picked is the pattern that has the maximum value and we pick it when we want a maximum sum
-        //            picked = values_to_optimize.Min().Key;
-        //        }
-        //        //pick the one with the maximum value
-        //        if (Minimize)
-        //        {
-        //            //picked is the pattern that has the minimum value and we pick it when we want a maximum sum
-        //            picked = values_to_optimize.Max().Key;
-        //        }
-
-        //        outputMatrix.SetValue(new List<int>() { availableNodeStates[picked] }, nodeCoords.X, nodeCoords.Y,
-        //                              nodeCoords.Z);
-               
-        //    }
-        //    else
-        //    {
-        //        outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
-        //    }
-
-        //    Propagate(nodeCoords);
-
-        //    NumGen++;
-        //}
+     
 
         protected override void Propagate(Coord3D startPoint)
         {
