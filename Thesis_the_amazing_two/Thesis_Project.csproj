@@ -79,7 +79,7 @@
     <Compile Include="help_classes_hp\SimpleDemohp.cs" />
     <Compile Include="help_classes_hp\Modelhp.cs" />
     <Compile Include="help_classes_hp\SimpleModelhp.cs" />
-    <Compile Include="Thesis_the_amazing_twoInfo.cs" />
+    <Compile Include="Thesis_Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

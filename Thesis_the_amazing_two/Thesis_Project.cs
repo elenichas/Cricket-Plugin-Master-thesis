@@ -4,7 +4,7 @@ using Grasshopper.Kernel;
 
 namespace Thesis
 {
-    public class Thesis_the_amazing_twoInfo : GH_AssemblyInfo
+    public class Thesis_Project : GH_AssemblyInfo
     {
         public override string Name
         {
