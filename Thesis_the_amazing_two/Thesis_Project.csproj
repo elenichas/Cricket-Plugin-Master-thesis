@@ -61,7 +61,7 @@
     <Compile Include="Components\Decoder.cs" />
     <Compile Include="Components\ModelSynthesis_max_min.cs" />
     <Compile Include="Components\ModelSynthesis_timer.cs" />
-    <Compile Include="Components\ConvolutionalSynthesis.cs" />
+    <Compile Include="Components\ModelSynthesis_overlapping.cs" />
     <Compile Include="Components\ModelSynthesis_hp.cs" />
     <Compile Include="Components\Segmentation.cs" />
     <Compile Include="Help_classes\ConvolutionalModel.cs" />
@@ -79,11 +79,50 @@
     <Compile Include="help_classes_hp\SimpleDemohp.cs" />
     <Compile Include="help_classes_hp\Modelhp.cs" />
     <Compile Include="help_classes_hp\SimpleModelhp.cs" />
+    <Compile Include="help_classes_mm\InputModelm.cs" />
+    <Compile Include="help_classes_mm\Modelm.cs" />
+    <Compile Include="help_classes_mm\SimpleModelm.cs" />
+    <Compile Include="help_classes_mm\SimpleDemom.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Thesis_Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\help_classes_minmax\" />
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\im1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\im2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\im3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\im4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\im5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\one.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\seg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zero.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

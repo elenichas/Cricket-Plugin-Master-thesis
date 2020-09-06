@@ -8,6 +8,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Attributes;
 using Grasshopper.Kernel.Data;
 using Rhino.Geometry;
+using Thesis.Properties;
 
 namespace Thesis
 {
@@ -200,8 +201,8 @@ namespace Thesis
             get
             {
                 //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
+                return Resource.zero;
+               // return null;
             }
         }
 

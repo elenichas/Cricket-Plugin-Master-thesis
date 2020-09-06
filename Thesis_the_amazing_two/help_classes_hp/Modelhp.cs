@@ -33,7 +33,7 @@ namespace Thesis.help_classes_hp
 
         //Abstract methods.
 
-        protected abstract void Init(InputModelhp inputModel, int patternSize, bool periodic, bool buildingprogram);
+        protected abstract void Initialize(InputModelhp inputModel, int patternSize, bool periodic, bool buildingprogram);
 
         public abstract void ObserveAndProgram();
 

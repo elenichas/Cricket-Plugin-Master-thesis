@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Attributes;
 using Rhino.Geometry;
 using Thesis.Help_classes;
- 
+using Thesis.Properties;
 
 namespace Thesis.Components
 {
@@ -35,9 +33,6 @@ namespace Thesis.Components
 
         }
 
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
@@ -81,8 +76,7 @@ namespace Thesis.Components
             if (Reset)
             {
                 InputVoxels = new List<Voxel>();
-                //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a color
-                //we flipt the y and z because the code is written in unity logic
+ 
                 for (int i = 0; i < InputBoxes.Count; i++)
                 {
                     int val = InputValues[i];
@@ -133,7 +127,6 @@ namespace Thesis.Components
                     UniquePatterns.Add(String.Join(",", patternList));
                 }
 
-                //PossibilitiesCount = demo.Model.outputMatrix.Cast<List<int>>().Select(x => x.Count).ToList();
             }
             else { Rhino.RhinoApp.WriteLine($"Model finished"); }
 
@@ -141,7 +134,6 @@ namespace Thesis.Components
 
             Output_voxels = demo.GetOutput();
 
-            //I will get the colors form this one
             var rawOutput = demo.Model.GetOutput();
 
             if (Output_voxels.Count > 0)
@@ -173,30 +165,22 @@ namespace Thesis.Components
             }
 
 
-            //DA.SetDataList(3, Prob);
             DA.SetDataList(3, PossibilitiesCountName);
             DA.SetDataList(4, PossibilitiesCount);
             DA.SetDataList(5, UniquePatterns);
 
-
         }
-
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+    
         protected override System.Drawing.Bitmap Icon
         {
             get
-            {
-                //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
+            {  
+                return Resource.im5;
+               
             }
         }
 
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
+   
         public override Guid ComponentGuid
         {
             get { return new Guid("ea2c4647-53f2-4c6d-8781-9dd38e220066"); }

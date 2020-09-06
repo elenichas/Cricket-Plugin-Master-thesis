@@ -1,7 +1,5 @@
-﻿using Rhino.Geometry;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
  
 
@@ -30,7 +28,7 @@ namespace Thesis.Help_classes
             //the x,y,z dimensions of the output model
             OutputSize = outputSize;
 
-            Init(inputModel, patternSize, periodic);
+            Initialize(inputModel, patternSize, periodic);
 
             //NeigboursMap is a data structure that stores the allowed neighboring patterns for every pattern and for every direction
             InitNeighboursMap();
@@ -49,24 +47,9 @@ namespace Thesis.Help_classes
         }
     
         
-        private static int[,,] CreateEmptyPattern(int pSize)
-        {
-            var res = new int[pSize, pSize, pSize];
+      
 
-            for (var i = 0; i < res.GetLength(0); i++)
-            {
-                for (var j = 0; j < res.GetLength(1); j++)
-                {
-                    for (var k = 0; k < res.GetLength(2); k++)
-                    {
-                        res[i, j, k] = 0;
-                    }
-                }
-            }
-            return res;
-        }
-
-        protected override void Init(InputModel inputModel, int patternSize, bool periodic)
+        protected override void Initialize(InputModel inputModel, int patternSize, bool periodic)
         {
             var inputMatrix = new int[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
             var OptimizeMatrix = new double[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];

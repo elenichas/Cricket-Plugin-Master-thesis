@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Thesis.Help_classes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.Kernel.Attributes;
-
+using Thesis.Properties;
 
 namespace Thesis
 {
@@ -144,8 +141,8 @@ namespace Thesis
             get
             {
                 // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
-                return null;
+               
+               return  Resource.im1;
             }
         }
 

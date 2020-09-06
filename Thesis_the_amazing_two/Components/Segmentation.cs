@@ -2,15 +2,13 @@
 using System.Collections.Generic;
  using Grasshopper.Kernel;
 using Rhino.Geometry;
- 
+using Thesis.Properties;
 
 namespace Thesis.Components
 {
     public class Segmentation : GH_Component
     {
-        /// <summary>
-        /// Initializes a new instance of the MyComponent1 class.
-        /// </summary>
+       
         public Segmentation()
           : base("Segmentation", "Segmentation",
               "Segment model to infer tileset",
@@ -25,19 +23,13 @@ namespace Thesis.Components
             pManager.AddBoxParameter("Voxels", "Voxels", "the voxels", GH_ParamAccess.list);
             pManager.AddNumberParameter("offset value", "OF", " ", GH_ParamAccess.list);
         }
-
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
+ 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddMeshParameter("Chuncks", "Chuncks", "the tileset", GH_ParamAccess.list);
         }
 
-        /// <summary>
-        /// This is the method that actually does the work.
-        /// </summary>
-        /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
+    
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Mesh> Mesh_Input = new List<Mesh>();
@@ -59,23 +51,15 @@ namespace Thesis.Components
             var Chuncks_list = Mesh.CreateBooleanIntersection(new_input, Voxels);
             DA.SetData(3, Chuncks_list);
         }
-
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+ 
         protected override System.Drawing.Bitmap Icon
         {
             get
-            {
-                //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
+            {                
+                return Resource.seg;             
             }
         }
 
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
         public override Guid ComponentGuid
         {
             get { return new Guid("ddc1ab11-5ab2-46cb-abbe-54d9811f9b0d"); }

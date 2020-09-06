@@ -19,7 +19,7 @@ namespace Thesis.Help_classes
 
             OutputSize = outputSize;
 
-            Init(inputModel, patternSize, periodic);
+            Initialize(inputModel, patternSize, periodic);
             FindNeighbours();
 
             InitOutputMatrix(outputSize);
@@ -28,7 +28,7 @@ namespace Thesis.Help_classes
            // Debug.Log("Model Ready!");
         }
 
-        protected override void Init(InputModel inputModel, int patternSize, bool periodic)
+        protected override void Initialize(InputModel inputModel, int patternSize, bool periodic)
         {
             var inputMatrix = new int[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
             patterns = new List<int[,,]>();

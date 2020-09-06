@@ -11,6 +11,7 @@ namespace Thesis.Help_classes
 
         //the color of each voxel
         public int Identity;
+        public double Value;
 
         //simple constructor
         public Voxel(int x, int y, int z, int identity)
@@ -20,6 +21,15 @@ namespace Thesis.Help_classes
             Z = (byte)z;
             Identity = identity;
          
+
+        }
+        public Voxel(int x, int y, int z, int identity,double value)
+        {
+            X = (byte)x;
+            Y = (byte)y;
+            Z = (byte)z;
+            Identity = identity;
+            Value = value;
 
         }
 

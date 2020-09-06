@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using Rhino.Geometry;
- 
+using System.Text;
+using System.Threading.Tasks;
+using Thesis.Help_classes;
 
-namespace Thesis.Help_classes
+namespace Thesis.help_classes_mm
 {
-    public abstract class Model
+    public abstract class Modelm
     {
         public static readonly Random Rnd = new Random();
-        public bool ProbabilisticModel { get; protected set; }       
+        public bool ProbabilisticModel { get; protected set; }
+
         public bool OptimizedModel { get; protected set; }
         public bool Maximize { get; protected set; }
         public bool Minimize { get; protected set; }
@@ -21,7 +22,7 @@ namespace Thesis.Help_classes
 
         public List<double> OptimizableVals;
         public int PatternSize { get; set; }
-        public  Dictionary<int, double> probabilites;
+        public Dictionary<int, double> probabilites;
 
         public Dictionary<int, Dictionary<Coord3D, List<int>>> NeighboursMap { get; protected set; }
         public List<int>[,,] outputMatrix;
@@ -34,14 +35,14 @@ namespace Thesis.Help_classes
 
         //Abstract methods.
 
-        protected abstract void Initialize(InputModel inputModel, int patternSize, bool periodic);
+        protected abstract void Initialize(InputModelm inputModel, int patternSize, bool periodic);
 
-        public abstract void Observe();
+        public abstract void ObserveAndOptimize();
 
         protected abstract void Propagate(Coord3D startPoint);
 
         public abstract int[,,] GetOutput();
- 
+
 
         protected static int[,,] GetCurrentPattern(int[,,] matrix, int x, int y, int z, int patternSize)
         {
@@ -57,7 +58,7 @@ namespace Thesis.Help_classes
                     }
                 }
             }
- 
+
             return pattern;
         }
         protected static double GetCurrentPatternValue(double[,,] matrix, int x, int y, int z, int patternSize)
@@ -75,7 +76,7 @@ namespace Thesis.Help_classes
                 }
             }
             double sum = patternvalue.Cast<double>().Sum();
-           
+
             return sum;
         }
 
@@ -93,7 +94,7 @@ namespace Thesis.Help_classes
 
                         for (var i = 0; i < patterns.Count; i++)
                         {
-                          
+
                             outputMatrix[x, y, z].Add(i);
                         }
                     }
@@ -110,8 +111,8 @@ namespace Thesis.Help_classes
                 {
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
-                         if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)                            
-                           collapsableNodes.Add(new Coord3D(x, y, z));                      
+                        if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)
+                            collapsableNodes.Add(new Coord3D(x, y, z));
                     }
                 }
             }

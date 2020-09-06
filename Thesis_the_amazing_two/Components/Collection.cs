@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using Thesis.Properties;
 
 namespace Thesis.Components
 {
@@ -93,8 +94,8 @@ namespace Thesis.Components
             get
             {
                 //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
+                 return Resource.one;
+                //return null;
             }
         }
 

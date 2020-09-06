@@ -4,24 +4,20 @@ using System.Linq;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Thesis.Help_classes;
+using Thesis.Properties;
 
 namespace Thesis.Components
 {
-    public class ConvolutionalSynthesis : GH_Component
+    public class ModelSynthesis_overlapping : GH_Component
     {
-        /// <summary>
-        /// Initializes a new instance of the MyComponent1 class.
-        /// </summary>
-        public ConvolutionalSynthesis()
-          : base("ConvolutionalSynthesis", "Convolutional",
-              "Description",
+
+        public ModelSynthesis_overlapping()
+          : base("ModelSynthesis_overlapping", "ModelSynthesis_overlapping ",
+              "3d implementation of the WFC with overlapping patterns",
               "Thesis", "Synthesis")
         {
         }
 
-        /// <summary>
-        /// Registers all the input parameters for this component.
-        /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBoxParameter("Input Model", "IM", "The voxels of the input model", GH_ParamAccess.list);
@@ -34,9 +30,7 @@ namespace Thesis.Components
             pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
         }
 
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
+ 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
@@ -96,8 +90,6 @@ namespace Thesis.Components
                 demo.GenerateOutput();
                 mes = demo.message;
 
-
-                //Rhino.RhinoApp.WriteLine(demo.Model.GenerationFinished.ToString());
             }
             DA.SetData(4, mes);
 
@@ -108,7 +100,7 @@ namespace Thesis.Components
                 Output_voxels = demo.GetOutput();
             }
 
-            //I will get the colors form this one
+ 
             var rawOutput = demo.Model.GetOutput();
 
             if (Output_voxels.Count > 0)
@@ -141,22 +133,15 @@ namespace Thesis.Components
             DA.SetDataList(3, Prob);
         }
 
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+   
         protected override System.Drawing.Bitmap Icon
         {
             get
             {
-                //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
+                return Resource.im3;             
             }
         }
 
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
         public override Guid ComponentGuid
         {
             get { return new Guid("5bd837ed-c53f-45bd-a45b-8aaf4f07501f"); }

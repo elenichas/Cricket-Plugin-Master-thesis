@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Grasshopper.Kernel;
+ using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Thesis.Help_classes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.Kernel.Attributes;
-using Thesis.help_classes_hp;
+ using Thesis.help_classes_hp;
+using Thesis.Properties;
 
 namespace Thesis.Components
 {
@@ -24,10 +19,6 @@ namespace Thesis.Components
         {
         }
 
-        /// <summary>
-        /// Registers all the input parameters for this component.
-        /// </summary>
-
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBoxParameter("Input Model", "IM", "The voxels of the input model", GH_ParamAccess.list);
@@ -39,9 +30,6 @@ namespace Thesis.Components
             pManager.AddBooleanParameter("BuildingProgram", "BP", "if true uses the defined percentages instead of probabilites", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
-
-
-
 
         }
 
@@ -157,8 +145,8 @@ namespace Thesis.Components
             get
             {
                 // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
-                return null;
+  
+               return Resource.im2;
             }
         }
 
