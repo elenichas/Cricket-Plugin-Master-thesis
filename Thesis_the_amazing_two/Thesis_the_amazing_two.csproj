@@ -59,23 +59,32 @@
     <Compile Include="Components\Collection.cs" />
     <Compile Include="Components\ModelSynthesis.cs" />
     <Compile Include="Components\Decoder.cs" />
-    <Compile Include="Components\ModelSynthesis2.cs" />
+    <Compile Include="Components\ModelSynthesis_max_min.cs" />
+    <Compile Include="Components\ModelSynthesis_timer.cs" />
     <Compile Include="Components\ConvolutionalSynthesis.cs" />
-    <Compile Include="Help classes\ConvolutionalModel.cs" />
-    <Compile Include="Help classes\ConvolutionalModelDemo.cs" />
-    <Compile Include="Help classes\Coord3d.cs" />
-    <Compile Include="Help classes\Extensions.cs" />
-    <Compile Include="Help classes\InputModel.cs" />
-    <Compile Include="Help classes\Model.cs" />
-    <Compile Include="Help classes\SimpleDemo.cs" />
-    <Compile Include="Help classes\SimpleModel.cs" />
-    <Compile Include="Help classes\Voxel.cs" />
-    <Compile Include="Help classes\VoxelModel.cs" />
+    <Compile Include="Components\ModelSynthesis_hp.cs" />
+    <Compile Include="Components\Segmentation.cs" />
+    <Compile Include="Help_classes\ConvolutionalModel.cs" />
+    <Compile Include="Help_classes\ConvolutionalModelDemo.cs" />
+    <Compile Include="Help_classes\Coord3d.cs" />
+    <Compile Include="Help_classes\Extensions.cs" />
+    <Compile Include="Help_classes\InputModel.cs" />
+    <Compile Include="Help_classes\Model.cs" />
+    <Compile Include="Help_classes\SimpleDemo.cs" />
+    <Compile Include="Help_classes\SimpleModel.cs" />
+    <Compile Include="Help_classes\Voxel.cs" />
+    <Compile Include="Help_classes\VoxelModel.cs" />
     <Compile Include="Components\Encoder.cs" />
+    <Compile Include="help_classes_hp\InputModelhp.cs" />
+    <Compile Include="help_classes_hp\SimpleDemohp.cs" />
+    <Compile Include="help_classes_hp\Modelhp.cs" />
+    <Compile Include="help_classes_hp\SimpleModelhp.cs" />
     <Compile Include="Thesis_the_amazing_twoInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\help_classes_minmax\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

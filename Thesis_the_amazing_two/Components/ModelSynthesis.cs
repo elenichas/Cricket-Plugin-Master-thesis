@@ -13,11 +13,7 @@ namespace Thesis
 {
     public class ModelSynthesis : GH_Component 
     {
-
-        public override void CreateAttributes()
-        {
-            m_attributes = new CustomAttributes(this);
-        }
+      
         public ModelSynthesis()
           : base("Model Synthesis", "Model Synthesis",
               "3D implementation of the wfc algorithm",
@@ -27,15 +23,15 @@ namespace Thesis
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {           
-            pManager.AddBoxParameter("Input Model", "IM", "The input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Input Values", "IV", "The values of voxels int the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Pattern Size", "P", "The pattern size to infer from the input model", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Input Size", "IP", "Size in XYZ", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Output Size", "OP", "Size in XYZ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Probabilistic", "PR", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Periodic", "PE", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Fixed Corners", "FC", " ", GH_ParamAccess.item);
+            pManager.AddBoxParameter("Input Model", "IM", "The voxels of the input model", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Input Identities", "II", "The identities of the voxels", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Fixed Corners", "FC", "The first node of the matrix collapsed into the first pattern", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Thesis
         {
             List<Box> InputBoxes = new List<Box>();
             List<Voxel> InputVoxels = new List<Voxel>();
-            List<int> InputValues = new List<int>();
+            List<int> InputIdentities = new List<int>();
 
             Vector3d inSize = new Vector3d();
             Vector3d outSize = new Vector3d();
@@ -74,7 +70,7 @@ namespace Thesis
             int Pattern_Size = 0;
 
             if (!DA.GetDataList(0,  InputBoxes)) return;
-            if (!DA.GetDataList(1,  InputValues)) return;
+            if (!DA.GetDataList(1,  InputIdentities)) return;
             if (!DA.GetData(2, ref Pattern_Size)) return;
             if (!DA.GetData(3, ref inSize)) return;
             if (!DA.GetData(4, ref outSize)) return;
@@ -86,7 +82,7 @@ namespace Thesis
             //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value       
             for (int i = 0; i < InputBoxes.Count; i++)
             {
-              int identity = InputValues[i];  
+              int identity = InputIdentities[i];  
                Voxel vox = new Voxel((int)Math.Floor(InputBoxes[i].Center.X), (int)Math.Floor(InputBoxes[i].Center.Y), (int)Math.Floor(InputBoxes[i].Center.Z), identity);
                InputVoxels.Add(vox);
                  
@@ -121,22 +117,19 @@ namespace Thesis
                 OutBoxes2 = new List<Box>();
                 foreach (var v in Output_voxels)
                 {
-                    var domain = new Interval(-0.5, 0.5);
-                    var plane = new Plane(new Point3d(((int)v.X) * 1.0, ((int)v.Y) * 1.0, ((int)v.Z) * 1.0), Vector3d.ZAxis);
-                    var b = new Box(plane, domain, domain, domain);
-                    OutBoxes2.Add(b);
-                   OutValues.Add(rawOutput[v.X, v.Y, v.Z]);
-                    
+                   var domain = new Interval(-0.5, 0.5);
+                   var plane = new Plane(new Point3d(((int)v.X) * 1.0, ((int)v.Y) * 1.0, ((int)v.Z) * 1.0), Vector3d.ZAxis);
+                   var b = new Box(plane, domain, domain, domain);
+                   OutBoxes2.Add(b);
+                   OutValues.Add(rawOutput[v.X, v.Y, v.Z]);                   
                 }
             }
 
-
             DA.SetDataList(0, OutBoxes2);
             DA.SetDataList(1, OutValues);
-
             DA.SetData(2, demo.Model.patterns.Count());
 
-            //we output the probabilities of each pattern in the input model
+            // output the probabilities of each pattern in the input model
             Prob = new List<string>();
             foreach (KeyValuePair<int, double> kvp in demo.Model.probabilites)
             {
@@ -162,30 +155,5 @@ namespace Thesis
             get { return new Guid("887674AC-7B8D-4E16-88E5-AA6F5C3573CA"); }
         }
     }
-    //the customAttributes class changed the color of my GA component to pink :)
-    public class CustomAttributes : GH_ComponentAttributes
-    {
-        public CustomAttributes(IGH_Component component)
-          : base(component)
-        { }
-
-        protected override void Render(GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
-        {
-            if (channel == GH_CanvasChannel.Objects)
-            {
-                // Cache the existing style.
-                GH_PaletteStyle style = GH_Skin.palette_normal_standard;
-
-                // Swap out palette for normal, unselected components.
-                GH_Skin.palette_normal_standard = new GH_PaletteStyle(Color.Pink, Color.Black, Color.Black);
-
-                base.Render(canvas, graphics, channel);
-
-                // Put the original style back.
-                GH_Skin.palette_normal_standard = style;
-            }
-            else
-                base.Render(canvas, graphics, channel);
-        }
-    }
+   
 }

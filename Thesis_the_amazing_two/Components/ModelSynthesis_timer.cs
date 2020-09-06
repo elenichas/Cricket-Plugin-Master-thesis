@@ -2,38 +2,36 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Attributes;
 using Rhino.Geometry;
 using Thesis.Help_classes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.Kernel.Attributes;
+ 
 
 namespace Thesis.Components
 {
-    public class ModelSynthesis2 : GH_Component
+    public class ModelSynthesis_timer : GH_Component
     {
-
-        public override void CreateAttributes()
-        {
-            m_attributes = new CustomAttributes(this);
-        }
-        public ModelSynthesis2()
-          : base("Model Synthesis2", "Model Synthesis2",
-              "does the model synthesis",
-              "Thesis", "Synthesis2")
+       //This component gets updated with a timer
+       //it is created to see the steps followed by the algorithm and understand contradiction cases better
+        public ModelSynthesis_timer()
+          : base("Model Synthesis_timer", "Model Synthesis_timer",
+              "3D implementation of the wfc algorithm with timer update",
+              "Thesis", "Synthesis")
         {
         }
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBoxParameter("Input Model", "IM", "The input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Input Values", "IV", "The values of voxels int the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Pattern Size", "P", "The pattern size to infer from the input model", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Input Size", "IP", "Size in XYZ", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Output Size", "OP", "Size in XYZ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Probabilistic", "PR", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Periodic", "PE", " ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("RESET", "R", "Reset", GH_ParamAccess.item);
+            pManager.AddBoxParameter("Input Model", "IM", "The voxels of input model", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Input Identities", "IV", "The identities of the voxels", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Reset", "R", "Press to restart the algorithm", GH_ParamAccess.item);
 
         }
 
@@ -204,4 +202,6 @@ namespace Thesis.Components
             get { return new Guid("ea2c4647-53f2-4c6d-8781-9dd38e220066"); }
         }
     }
+ 
+    
 }
