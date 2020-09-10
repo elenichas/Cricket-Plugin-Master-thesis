@@ -14,13 +14,7 @@ namespace Thesis
 {
     public class Encoder : GH_Component
     {
-        public override void CreateAttributes()
-        {
-            m_attributes = new CustomAttributes(this);
-        }
-        /// <summary>
-        /// Initializes a new instance of the MyComponent1 class.
-        /// </summary>
+       
         public Encoder()
           : base("Encoder", "Encoder",
               "does the encoding",
@@ -214,30 +208,6 @@ namespace Thesis
             get { return new Guid("e4eb62d9-7de9-48b3-84b2-3a7236ccae67"); }
         }
 
-        public class CustomAttributes : GH_ComponentAttributes
-        {
-            public CustomAttributes(IGH_Component component)
-              : base(component)
-            { }
-
-            protected override void Render(GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
-            {
-                if (channel == GH_CanvasChannel.Objects)
-                {
-                    // Cache the existing style.
-                    GH_PaletteStyle style = GH_Skin.palette_normal_standard;
-
-                    // Swap out palette for normal, unselected components.
-                    GH_Skin.palette_normal_standard = new GH_PaletteStyle(Color.Pink, Color.Black, Color.Black);
-
-                    base.Render(canvas, graphics, channel);
-
-                    // Put the original style back.
-                    GH_Skin.palette_normal_standard = style;
-                }
-                else
-                    base.Render(canvas, graphics, channel);
-            }
-        }
+         
     }
 }
