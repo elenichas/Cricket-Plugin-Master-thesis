@@ -27,8 +27,8 @@ namespace Thesis
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBrepParameter("Input Voxels", "IV", "The input voxels", GH_ParamAccess.list);
-            pManager.AddMeshParameter("Input Chuncks", "ICH", "The input chuncks of geometry contained in the voxels", GH_ParamAccess.list);
+            pManager.AddBrepParameter("Input Voxels", "IV", "The input voxels.", GH_ParamAccess.list);
+            pManager.AddMeshParameter("Input Geometries", "IG", "The geometries contained in each voxel.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Thesis
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Binary Codes", "BC", "The  binary encoding of each voxel", GH_ParamAccess.list);
-            pManager.AddTextParameter("Unique Binary Codes", "UBC", "The  unique binary codes in the binary codes list", GH_ParamAccess.list);
-            pManager.AddTextParameter("Encoded List", "EL", "The list of chuncks encoded based the index they exist in UBC", GH_ParamAccess.list);
+            pManager.AddTextParameter("Binary Codes", "BC", "The  binary encoding of each voxel.", GH_ParamAccess.list);
+            pManager.AddTextParameter("Unique Binary Codes", "UBC", "The  unique binary codes found.", GH_ParamAccess.list);
+            pManager.AddTextParameter("Encoded List", "EL", "The list of geometries based  on their index in the UBC.", GH_ParamAccess.list);
         }
 
         /// <summary>

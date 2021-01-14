@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Components\Collection.cs" />
     <Compile Include="Components\ModelSynthesis.cs" />
-    <Compile Include="Components\Decoder.cs" />
     <Compile Include="Components\ModelSynthesis_max_min.cs" />
     <Compile Include="Components\ModelSynthesis_timer.cs" />
     <Compile Include="Components\ModelSynthesis_overlapping.cs" />

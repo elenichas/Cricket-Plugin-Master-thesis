@@ -20,8 +20,8 @@ namespace Thesis.Components
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddMeshParameter("Mesh", "Mesh", "the mesh to segment", GH_ParamAccess.list);
-            pManager.AddBoxParameter("Voxels", "Voxels", "the voxels", GH_ParamAccess.list);
-            pManager.AddNumberParameter("offset value", "OF", " ", GH_ParamAccess.list);
+            pManager.AddMeshParameter("Voxels", "Voxels", "the voxels", GH_ParamAccess.list);
+            pManager.AddNumberParameter("offset value", "OF", " ", GH_ParamAccess.item);
         }
  
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
@@ -36,7 +36,7 @@ namespace Thesis.Components
             List<Mesh> Voxels = new List<Mesh>();
             double offset = 0;
 
-            if (!DA.GetData(0, ref Mesh_Input)) return;
+            if (!DA.GetDataList(0,Mesh_Input)) return;
             if (!DA.GetDataList(1, Voxels)) return;
             if (!DA.GetData(2,  ref offset)) return;
            
@@ -49,7 +49,7 @@ namespace Thesis.Components
 
 
             var Chuncks_list = Mesh.CreateBooleanIntersection(new_input, Voxels);
-            DA.SetData(3, Chuncks_list);
+            DA.SetDataList(0, Chuncks_list);
         }
  
         protected override System.Drawing.Bitmap Icon
