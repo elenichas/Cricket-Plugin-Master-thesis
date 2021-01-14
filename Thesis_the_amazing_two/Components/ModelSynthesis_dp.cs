@@ -9,38 +9,38 @@ using Thesis.Properties;
 
 namespace Thesis.Components
 {
-    public class ModelSynthesis_hp : GH_Component
+    public class ModelSynthesis_dp : GH_Component
     {
        
-        public ModelSynthesis_hp()
-          : base("ModelSynthesis_hp", "ModelSynthesis_hp",
-              "3D implementation of the wfc algorithm with defined probabilities",
+        public ModelSynthesis_dp()
+          : base("ModelSynthesis_dp", "ModelSynthesis_dp",
+              "3D implementation of the wfc algorithm with defined probabilities as percentages.",
               "Thesis", "Synthesis")
         {
         }
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Input percentages", "P", "The desired percentage of each tile type", GH_ParamAccess.list);
-            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("BuildingProgram", "BP", "if true uses the defined percentages instead of probabilites", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
+            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Input percentages", "P", "The desired percentage of each tile type.", GH_ParamAccess.list);
+            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("BuildingProgram", "BP", "if true uses the defined percentages instead of probabilites.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Generate", "G", "Press to create output model.", GH_ParamAccess.item);
 
         }
 
 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Output Values", "OV", "The output values.", GH_ParamAccess.list);
            // pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Status", "M", "Message display", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Pattern Probabilities", "P", "The pattern probabilities percentages.", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Status", "M", "Message display.", GH_ParamAccess.list);
 
         }
 

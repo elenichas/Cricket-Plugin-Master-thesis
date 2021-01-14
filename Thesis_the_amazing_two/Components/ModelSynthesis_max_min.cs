@@ -14,25 +14,25 @@ namespace Thesis.Components
         
         public ModelSynthesis_max_min()
           : base("ModelSynthesis_max_min", "ModelSynthesis_max_min",
-              "3D implementation of the wfc algorithm to max-min value",
+              "3D implementation of the wfc algorithm with extra goals of maximize/minimize value.",
               "Thesis", "Synthesis")
         {
         }
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBoxParameter("Voxels", "IM", "The input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Encoded List", "I", "The values of voxels int the input model", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Input Values", "IV", "The values of voxels int the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
+            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "I", "The values of voxels int the input model.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Voxel Values", "IV", "The values of voxels int the input model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input.", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies.", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Optimized Model","OM" , "If true, the input values are used to create the output", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Minimize", "MIN ", "The objective is to minimize the total value ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Maximize", "MAX ", " The objective is to maximize the total value", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Optimized Model","OM" , "If true, the Voxel Values are used to create the output.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Minimize", "MIN ", "The objective is to minimize the total value based on voxel values.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Maximize", "MAX ", " The objective is to maximize the total value based on voxel values.", GH_ParamAccess.item);
         }
 
       
@@ -42,7 +42,7 @@ namespace Thesis.Components
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
            // pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
             pManager.AddGenericParameter("Patterns Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Messages", "M", "Message display", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Status", "M", "Message display", GH_ParamAccess.list);
         }
 
         List<Box> OutBoxes2 = new List<Box>();

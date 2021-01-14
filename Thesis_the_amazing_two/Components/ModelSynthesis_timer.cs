@@ -38,9 +38,9 @@ namespace Thesis.Components
             pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
             //pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Pattern Probabilities", "PP", "The probabilities", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Possibilities Count", "PC", "The number of possibilities remaining at each node", GH_ParamAccess.list);
-            pManager.AddGenericParameter("UniquePatters", "P", "The Patterns", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Unique Patters", "UP", "The Patterns", GH_ParamAccess.list);
         }
 
 

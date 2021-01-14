@@ -26,7 +26,7 @@ namespace Thesis.Components
  
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddMeshParameter("Chuncks", "Chuncks", "the tileset", GH_ParamAccess.list);
+            pManager.AddMeshParameter("Segments", "Segments", "the geometries generated from segmentation", GH_ParamAccess.list);
         }
 
     
@@ -48,8 +48,8 @@ namespace Thesis.Components
             new_input.Add(Mesh_Input[0].Offset(offset, true));
 
 
-            var Chuncks_list = Mesh.CreateBooleanIntersection(new_input, Voxels);
-            DA.SetDataList(0, Chuncks_list);
+            var Segments_list = Mesh.CreateBooleanIntersection(new_input, Voxels);
+            DA.SetDataList(0, Segments_list);
         }
  
         protected override System.Drawing.Bitmap Icon

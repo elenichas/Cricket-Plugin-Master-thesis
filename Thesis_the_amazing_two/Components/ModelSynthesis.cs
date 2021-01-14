@@ -20,14 +20,14 @@ namespace Thesis
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {           
-            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
+            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input.", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies.", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Generate", "G", "Press to create output model.", GH_ParamAccess.item);
            // pManager.AddBooleanParameter("Fixed Corners", "FC", "The first node of the matrix collapsed into the first pattern", GH_ParamAccess.item);
         }
 
@@ -36,11 +36,11 @@ namespace Thesis
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Output Values", "OV", "The output values.", GH_ParamAccess.list);
             //pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Status", "S", "Message display", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities.", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Status", "S", "Message display.", GH_ParamAccess.list);
         }
 
 

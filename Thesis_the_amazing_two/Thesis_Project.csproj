@@ -61,7 +61,7 @@
     <Compile Include="Components\ModelSynthesis_max_min.cs" />
     <Compile Include="Components\ModelSynthesis_timer.cs" />
     <Compile Include="Components\ModelSynthesis_overlapping.cs" />
-    <Compile Include="Components\ModelSynthesis_hp.cs" />
+    <Compile Include="Components\ModelSynthesis_dp.cs" />
     <Compile Include="Components\Segmentation.cs" />
     <Compile Include="Help_classes\ConvolutionalModel.cs" />
     <Compile Include="Help_classes\ConvolutionalModelDemo.cs" />
