@@ -33,11 +33,11 @@ namespace Thesis.Components
  
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Messages", "M", "Message display", GH_ParamAccess.list);
+           // pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Status", "M", "Message display", GH_ParamAccess.list);
         }
 
 
@@ -91,7 +91,7 @@ namespace Thesis.Components
                 mes = demo.message;
 
             }
-            DA.SetData(4, mes);
+            DA.SetData(3, mes);
 
             var Output_voxels = new List<Voxel>();
 
@@ -122,7 +122,7 @@ namespace Thesis.Components
             DA.SetDataList(0, OutBoxes2);
             DA.SetDataList(1, OutValues);
 
-            DA.SetData(2, demo.Model.patterns.Count());
+           // DA.SetData(2, demo.Model.patterns.Count());
 
             Prob = new List<string>();
             foreach (KeyValuePair<int, double> kvp in demo.Model.probabilites)
@@ -130,7 +130,7 @@ namespace Thesis.Components
                 var st = (kvp.Key.ToString() + "--->" + (Math.Truncate(1000 * kvp.Value) / 1000).ToString());
                 Prob.Add(st);
             }
-            DA.SetDataList(3, Prob);
+            DA.SetDataList(2, Prob);
         }
 
    

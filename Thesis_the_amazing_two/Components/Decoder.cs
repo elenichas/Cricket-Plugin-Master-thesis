@@ -7,21 +7,16 @@ using Thesis.Properties;
 
 namespace Thesis.Components
 {
-    public class Collection : GH_Component
+    public class Decoder : GH_Component
     {
-        /// <summary>
-        /// Initializes a new instance of the Decoder class.
-        /// </summary>
-        public Collection()
+
+        public Decoder()
           : base("Decoder", "Decoder",
               "Decodes the values given to get the final geometry placed in the output model",
               "Thesis", "Encode-Decode")
         {
         }
 
-        /// <summary>
-        /// Registers all the input parameters for this component.
-        /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddIntegerParameter("Output Values", "OV", "The code values of the output model", GH_ParamAccess.list);
@@ -30,23 +25,16 @@ namespace Thesis.Components
             pManager.AddMeshParameter("Input Geometries", "IG", "The input geometries contained in the voxels", GH_ParamAccess.list);
         }
 
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
+ 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddMeshParameter("Output Geometries", "OG", "All the tiles existing in the output model", GH_ParamAccess.list);
 
             pManager.AddPointParameter("Voxel Centers", "GC", "The centers of the voxels of every geometry in the output model", GH_ParamAccess.list);
-           // pManager.AddIntegerParameter("Output Unique", "OU", "All the unique tile codes found in the output model", GH_ParamAccess.list);
-           // pManager.AddMeshParameter("Meshes Collection", "MF", "All the unique tiles as meshes found in the output model", GH_ParamAccess.list);
-           // pManager.AddBrepParameter("Voxels Collection", "VF", "All the unique voxels of the tiles found in the output model", GH_ParamAccess.list);
+     
         }
 
-        /// <summary>
-        /// This is the method that actually does the work.
-        /// </summary>
-        /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
+
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<int> OutputValues = new List<int>();
@@ -80,8 +68,7 @@ namespace Thesis.Components
 
             }
 
-            // DA.SetDataList(1, Meshes);
-            // DA.SetDataList(2, voxels);
+
             var Output_Meshes = new List<Mesh>();
             var Output_Centers = new List<Point3d>();
 
@@ -103,9 +90,7 @@ namespace Thesis.Components
 
         }
 
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+
         protected override System.Drawing.Bitmap Icon
         {
             get
@@ -116,9 +101,7 @@ namespace Thesis.Components
             }
         }
 
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
+
         public override Guid ComponentGuid
         {
             get { return new Guid("b0ceaadb-52c4-4cf3-aba5-56fd24ee2b1d"); }

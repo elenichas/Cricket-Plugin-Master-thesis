@@ -22,8 +22,8 @@ namespace Thesis.Components
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBoxParameter("Input Model", "IM", "The voxels of input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Input Identities", "IV", "The identities of the voxels", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Voxels", "IM", "The voxels of input model", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "IV", "The identities of the voxels", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
             pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
             pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
@@ -35,11 +35,11 @@ namespace Thesis.Components
 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("PossibilitiesCount", "PC", "The number of possibilities remaining at each node", GH_ParamAccess.list);
+            //pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Possibilities Count", "PC", "The number of possibilities remaining at each node", GH_ParamAccess.list);
             pManager.AddGenericParameter("UniquePatters", "P", "The Patterns", GH_ParamAccess.list);
         }
 
@@ -155,7 +155,7 @@ namespace Thesis.Components
             DA.SetDataList(0, OutBoxes2);
             DA.SetDataList(1, OutValues);
 
-            DA.SetData(2, demo.Model.patterns.Count());
+           // DA.SetData(2, demo.Model.patterns.Count());
 
             Prob = new List<string>();
             foreach (KeyValuePair<int, double> kvp in demo.Model.probabilites)
@@ -165,9 +165,9 @@ namespace Thesis.Components
             }
 
 
-            DA.SetDataList(3, PossibilitiesCountName);
-            DA.SetDataList(4, PossibilitiesCount);
-            DA.SetDataList(5, UniquePatterns);
+            DA.SetDataList(2, PossibilitiesCountName);
+            DA.SetDataList(3, PossibilitiesCount);
+            DA.SetDataList(4, UniquePatterns);
 
         }
     

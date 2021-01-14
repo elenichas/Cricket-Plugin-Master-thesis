@@ -20,15 +20,15 @@ namespace Thesis
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {           
-            pManager.AddBoxParameter("Input Model", "IM", "The voxels of the input model", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Input Identities", "II", "The identities of the voxels", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Voxels", "IM", "The voxels of the input model", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input", GH_ParamAccess.item);
             pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
             pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Probabilistic", "PR", "If true, uses the input model probabilities", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Periodic", "PE", "if true infers periodic adjacencies ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Generate", "G", "Press to create output model ", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Fixed Corners", "FC", "The first node of the matrix collapsed into the first pattern", GH_ParamAccess.item);
+           // pManager.AddBooleanParameter("Fixed Corners", "FC", "The first node of the matrix collapsed into the first pattern", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -36,18 +36,18 @@ namespace Thesis
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddBoxParameter("Output Model", "OM", "The output model", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Output Model Voxels", "OM", "The output model", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Output Values", "OV", "The output values", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Probabilities", "P", "The probabilities", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Messages", "M", "Message display", GH_ParamAccess.list);
+            //pManager.AddIntegerParameter("Patterns", "P", "The number of patters", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pattern Probabilities", "P", "The probabilities", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Status", "S", "Message display", GH_ParamAccess.list);
         }
 
 
         List<Box> OutBoxes2 = new List<Box>();
         List<int> OutValues = new List<int>();
         List<string> Prob = new List<string>();
-        public static  bool FixedCorners ;
+       // public static  bool FixedCorners ;
 
 
         protected override void SolveInstance(IGH_DataAccess DA)
@@ -74,7 +74,7 @@ namespace Thesis
             if (!DA.GetData(5, ref Probabilistic)) return;
             if (!DA.GetData(6, ref Periodic)) return;
             if (!DA.GetData(7, ref Generate)) return;
-            if (!DA.GetData(8, ref FixedCorners)) return;
+            //if (!DA.GetData(8, ref FixedCorners)) return;
 
             //We convert our list of boxes to voxels, a voxel has x,y,z coordinates and a value       
             for (int i = 0; i < InputBoxes.Count; i++)
@@ -96,7 +96,7 @@ namespace Thesis
                 mes =demo.message;
 
             }
-            DA.SetData(4, mes);
+            DA.SetData(3, mes);
             
             var Output_voxels = new List<Voxel>();
            
@@ -124,7 +124,7 @@ namespace Thesis
 
             DA.SetDataList(0, OutBoxes2);
             DA.SetDataList(1, OutValues);
-            DA.SetData(2, demo.Model.patterns.Count());
+           // DA.SetData(2, demo.Model.patterns.Count());
 
             // output the probabilities of each pattern in the input model
             Prob = new List<string>();
@@ -133,7 +133,7 @@ namespace Thesis
                 var st =(kvp.Key.ToString() + "--->" + (Math.Truncate(1000* kvp.Value)/1000).ToString());
                 Prob.Add(st);
             }
-            DA.SetDataList(3, Prob);
+            DA.SetDataList(2, Prob);
         }
 
         protected override System.Drawing.Bitmap Icon

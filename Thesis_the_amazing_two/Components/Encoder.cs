@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using Grasshopper;
-using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Attributes;
 using Grasshopper.Kernel.Data;
 using Rhino.Geometry;
 using Thesis.Properties;
@@ -22,54 +18,42 @@ namespace Thesis
         {
         }
 
-        /// <summary>
-        /// Registers all the input parameters for this component.
-        /// </summary>
+
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBrepParameter("Input Voxels", "IV", "The input voxels.", GH_ParamAccess.list);
             pManager.AddMeshParameter("Input Geometries", "IG", "The geometries contained in each voxel.", GH_ParamAccess.list);
         }
 
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Binary Codes", "BC", "The  binary encoding of each voxel.", GH_ParamAccess.list);
-            pManager.AddTextParameter("Unique Binary Codes", "UBC", "The  unique binary codes found.", GH_ParamAccess.list);
-            pManager.AddTextParameter("Encoded List", "EL", "The list of geometries based  on their index in the UBC.", GH_ParamAccess.list);
+            //pManager.AddTextParameter("Binary Codes", "BC", "The  binary encoding of each voxel.", GH_ParamAccess.list);
+           // pManager.AddTextParameter("Unique Binary Codes", "UBC", "The  unique binary codes found.", GH_ParamAccess.list);
+            pManager.AddTextParameter("Encoded List", "EL", "The generated codes of every geometry.", GH_ParamAccess.list);
         }
 
-        /// <summary>
-        /// This is the method that actually does the work.
-        /// </summary>
-        /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
+  
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Brep> InputVoxels = new List<Brep>();
             List<Mesh> InputChunks = new List<Mesh>();
 
-
             if (!DA.GetDataList(0, InputVoxels)) return;
             if (!DA.GetDataList(1, InputChunks)) return;
-
-           
-            
+         
             var OutputCodes = Encode(InputVoxels, InputChunks);
-            DA.SetDataList(0, OutputCodes);
+           // DA.SetDataList(0, OutputCodes);
 
             var Uniques = FindUnique(OutputCodes);
-            DA.SetDataList(1, Uniques);
+           // DA.SetDataList(1, Uniques);
 
             var IntegersList = MakeIntList(Uniques, OutputCodes);
-            DA.SetDataList(2, IntegersList);
+            DA.SetDataList(0, IntegersList);
         }
 
         public List<int> MakeIntList(string[] unique_array,List<string> OutputCodes)
         {
             //encode the list of geometries based on the indices in the unique array
-
             var encoded_list = new List<int>();
             for (int i = 0; i < OutputCodes.Count; i++)
             {
@@ -79,9 +63,7 @@ namespace Thesis
                     {
                         encoded_list.Add(j);
 
-
                     }
-
                 }
             }
             return encoded_list;
@@ -91,14 +73,13 @@ namespace Thesis
             //get the unique items from the code list
             var unique_items = new HashSet<string>(OutputCodes);
 
-
             //create an array with the unique strings
             string[] unique_array = new string[unique_items.Count + 1];
             unique_items.CopyTo(unique_array, 1);
             return unique_array;
         }
 
-        public List<string> Encode(List<Brep> InputVoxels,List <Mesh> InputChunks)
+        public List<string> Encode(List<Brep> InputVoxels,List <Mesh> InputGeometries)
         {
             List<string> Codes = new List<string>();
            
@@ -109,8 +90,6 @@ namespace Thesis
                 //make new encoding strings
                 String code = "";
               
-
-
                 //make a new tree for every voxel
                 DataTree<Point3d> DivTree = new DataTree<Point3d>();
                 DataTree<Point3d> ClosestTree = new DataTree<Point3d>();
@@ -149,8 +128,8 @@ namespace Thesis
                     List<Point3d> ClosestPts = new List<Point3d>();
                     for (int e = 0; e < DivTree.Branch(m).Count; e++)
                     {
-                        if (!(InputChunks[i] == null))
-                            ClosestPts.Add(InputChunks[i].ClosestPoint(DivTree.Branch(m)[e]));
+                        if (!(InputGeometries[i] == null))
+                            ClosestPts.Add(InputGeometries[i].ClosestPoint(DivTree.Branch(m)[e]));
                         else
                             ClosestPts.Add(new Point3d());
                     }
@@ -187,9 +166,6 @@ namespace Thesis
 
         }
 
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
             get
@@ -200,9 +176,6 @@ namespace Thesis
             }
         }
 
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
         public override Guid ComponentGuid
         {
             get { return new Guid("e4eb62d9-7de9-48b3-84b2-3a7236ccae67"); }

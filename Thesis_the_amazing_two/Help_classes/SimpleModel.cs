@@ -273,20 +273,20 @@ namespace Thesis.Help_classes
            //This method collapses the first node to the first pattern and can be used in floorplans when you
            //want to ensure the floor plan will be closed with surrounding walls
            
-            if ((NumGen == 0) && (ModelSynthesis.FixedCorners ==true))
-            {
+            //if ((NumGen == 0) && (ModelSynthesis.FixedCorners ==true))
+            //{
                 
-                var nodeCoordsfirst = collapsableNodes[0];
-                var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
-                outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[1] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
-                Propagate(nodeCoordsfirst);
+            //    var nodeCoordsfirst = collapsableNodes[0];
+            //    var availableNodeStatesfirst = outputMatrix[nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z].ToList();
+            //    outputMatrix.SetValue(new List<int>() { availableNodeStatesfirst[1] }, nodeCoordsfirst.X, nodeCoordsfirst.Y, nodeCoordsfirst.Z);
+            //    Propagate(nodeCoordsfirst);
 
-                //We can also collapse the top right corner-last node to the last pattern to make sure it is also a corner
-                //var nodeCoordslast = collapsableNodes.Last();
-                //var availableNodeStateslast = outputMatrix[nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z].ToList();
-                //outputMatrix.SetValue(new List<int>() { availableNodeStateslast.Last()}, nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z);
-                //Propagate(nodeCoordslast);
-            }
+            //    //We can also collapse the top right corner-last node to the last pattern to make sure it is also a corner
+            //    //var nodeCoordslast = collapsableNodes.Last();
+            //    //var availableNodeStateslast = outputMatrix[nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z].ToList();
+            //    //outputMatrix.SetValue(new List<int>() { availableNodeStateslast.Last()}, nodeCoordslast.X, nodeCoordslast.Y, nodeCoordslast.Z);
+            //    //Propagate(nodeCoordslast);
+            //}
 
             //Pick a random node from the collapsible nodes.
             if (collapsableNodes.Count == 0)
