@@ -11,7 +11,7 @@ namespace Thesis.Components
        
         public Segmentation()
           : base("Segmentation", "Segmentation",
-              "Segment model to infer tileset",
+              "Segmentation of model to infer tileset.",
               "Thesis", "Segmentation")
         {
         }
@@ -19,14 +19,14 @@ namespace Thesis.Components
       
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddMeshParameter("Mesh", "Mesh", "the mesh to segment", GH_ParamAccess.list);
-            pManager.AddMeshParameter("Voxels", "Voxels", "the voxels", GH_ParamAccess.list);
-            pManager.AddNumberParameter("offset value", "OF", " ", GH_ParamAccess.item);
+            pManager.AddMeshParameter("Mesh", "Mesh", "the mesh to segment.", GH_ParamAccess.list);
+            pManager.AddMeshParameter("Voxels", "Voxels", "the voxels.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("offset value", "OF", "The offset value affect the accuracy of the segmentation.", GH_ParamAccess.item);
         }
  
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddMeshParameter("Segments", "Segments", "the geometries generated from segmentation", GH_ParamAccess.list);
+            pManager.AddMeshParameter("Segments", "Segments", "The geometries generated from segmentation.", GH_ParamAccess.list);
         }
 
     

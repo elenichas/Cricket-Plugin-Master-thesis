@@ -20,8 +20,8 @@ namespace Thesis.Components
 
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBoxParameter("Input Model", "IM", "The voxels of the input model.", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Encoded List", "II", "The identities of the voxels.", GH_ParamAccess.list);
+            pManager.AddBoxParameter("Voxels", "V", "The voxels of the input model.", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Encoded List", "EL", "The identities of the voxels.", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Pattern Size", "P", "The size of patterns to extract from the input.", GH_ParamAccess.item);
             pManager.AddVectorParameter("Input Size", "IP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
             pManager.AddVectorParameter("Output Size", "OP", "Input model size in XYZ dimensions.", GH_ParamAccess.item);
