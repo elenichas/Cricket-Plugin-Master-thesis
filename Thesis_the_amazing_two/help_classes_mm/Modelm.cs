@@ -43,8 +43,13 @@ namespace Thesis.help_classes_mm
 
         public abstract int[,,] GetOutput();
 
-
-        protected static int[,,] GetCurrentPattern(int[,,] matrix, int x, int y, int z, int patternSize)
+        protected static int[,,] GetCurrentPattern(
+            int[,,] matrix,
+            int x,
+            int y,
+            int z,
+            int patternSize
+        )
         {
             var pattern = new int[patternSize, patternSize, patternSize];
             for (var i = x; i < x + patternSize; i++)
@@ -53,15 +58,25 @@ namespace Thesis.help_classes_mm
                 {
                     for (var k = z; k < z + patternSize; k++)
                     {
-                        pattern[i - x, j - y, k - z] = matrix[i % matrix.GetLength(0), j % matrix.GetLength(1), k % matrix.GetLength(2)];
-
+                        pattern[i - x, j - y, k - z] = matrix[
+                            i % matrix.GetLength(0),
+                            j % matrix.GetLength(1),
+                            k % matrix.GetLength(2)
+                        ];
                     }
                 }
             }
 
             return pattern;
         }
-        protected static double GetCurrentPatternValue(double[,,] matrix, int x, int y, int z, int patternSize)
+
+        protected static double GetCurrentPatternValue(
+            double[,,] matrix,
+            int x,
+            int y,
+            int z,
+            int patternSize
+        )
         {
             var patternvalue = new double[patternSize, patternSize, patternSize];
             for (var i = x; i < x + patternSize; i++)
@@ -70,8 +85,11 @@ namespace Thesis.help_classes_mm
                 {
                     for (var k = z; k < z + patternSize; k++)
                     {
-                        patternvalue[i - x, j - y, k - z] = matrix[i % matrix.GetLength(0), j % matrix.GetLength(1), k % matrix.GetLength(2)];
-
+                        patternvalue[i - x, j - y, k - z] = matrix[
+                            i % matrix.GetLength(0),
+                            j % matrix.GetLength(1),
+                            k % matrix.GetLength(2)
+                        ];
                     }
                 }
             }
@@ -94,7 +112,6 @@ namespace Thesis.help_classes_mm
 
                         for (var i = 0; i < patterns.Count; i++)
                         {
-
                             outputMatrix[x, y, z].Add(i);
                         }
                     }
@@ -120,7 +137,6 @@ namespace Thesis.help_classes_mm
             return collapsableNodes;
         }
 
-
         protected bool CheckIfFinished()
         {
             //the output matrix includes all the nodes
@@ -137,11 +153,7 @@ namespace Thesis.help_classes_mm
 
         public static int Mod(int n, int m)
         {
-
             return ((n % m) + m) % m;
-
         }
-
-
     }
 }

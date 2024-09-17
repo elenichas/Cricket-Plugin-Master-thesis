@@ -11,7 +11,14 @@ namespace Thesis.help_classes_mm
     {
         //The six possible directions.
         public readonly Coord3D[] Directions = new Coord3D[6]
-           {Coord3D.Left, Coord3D.Right, Coord3D.Up, Coord3D.Down, Coord3D.Forward, Coord3D.Back};
+        {
+            Coord3D.Left,
+            Coord3D.Right,
+            Coord3D.Up,
+            Coord3D.Down,
+            Coord3D.Forward,
+            Coord3D.Back,
+        };
 
         //public SimpleModel(InputModel inputModel, int patternSize, Coord3D outputSize, bool periodic, bool addNeighbours, bool probabilisticModel)
         //{
@@ -53,7 +60,17 @@ namespace Thesis.help_classes_mm
         //    InitOutputMatrix(outputSize);
 
         //}
-        public SimpleModelm(InputModelm inputModel, int patternSize, Coord3D outputSize, bool periodic, bool addNeighbours, bool probabilisticModel, bool Optimizedmodel, bool Maximizemodel, bool Minimizemodel)
+        public SimpleModelm(
+            InputModelm inputModel,
+            int patternSize,
+            Coord3D outputSize,
+            bool periodic,
+            bool addNeighbours,
+            bool probabilisticModel,
+            bool Optimizedmodel,
+            bool Maximizemodel,
+            bool Minimizemodel
+        )
         {
             NeighboursMap = new Dictionary<int, Dictionary<Coord3D, List<int>>>();
             //defines if the input voxel model is periodic or not (i.e. if it can be "looped over" or not)
@@ -80,10 +97,8 @@ namespace Thesis.help_classes_mm
 
             if (addNeighbours)
             {
-
                 //  causing problems, commented it out!!!!!!!!!!!!!!!!!!!!!!!!
                 // DetectNeighbours();
-
             }
             //foreach (KeyValuePair<int, Dictionary<Coord3D, List<int>>> kvp in NeighboursMap)
             //{
@@ -94,7 +109,6 @@ namespace Thesis.help_classes_mm
             //}
 
             InitOutputMatrix(outputSize);
-
         }
 
         private static int[,,] CreateEmptyPattern(int pSize)
@@ -118,18 +132,28 @@ namespace Thesis.help_classes_mm
         {
             OptimizableVals = new List<double>();
             var inputMatrix = new int[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
-            var OptimizeMatrix = new double[inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z];
+            var OptimizeMatrix = new double[
+                inputModel.Size.X,
+                inputModel.Size.Y,
+                inputModel.Size.Z
+            ];
             patterns = new List<int[,,]>();
-            patternMatrix = new int[(int)Math.Ceiling((double)(inputModel.Size.X / patternSize)),
+            patternMatrix = new int[
+                (int)Math.Ceiling((double)(inputModel.Size.X / patternSize)),
                 (int)Math.Ceiling((double)(inputModel.Size.Y / patternSize)),
-                (int)Math.Ceiling((double)(inputModel.Size.Z / patternSize))];
+                (int)Math.Ceiling((double)(inputModel.Size.Z / patternSize))
+            ];
             probabilites = new Dictionary<int, double>();
 
             //the matrix with the voxels identities (who am I as a tile?)
-            inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity);
+            inputModel.Voxels.ForEach(voxel =>
+                inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity
+            );
 
             //the matrixwith the values each voxel carries and we wont to optimize
-            inputModel.Voxels.ForEach(voxel => OptimizeMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Value);
+            inputModel.Voxels.ForEach(voxel =>
+                OptimizeMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Value
+            );
 
             //////Add "empty space" pattern.
             //patterns.Add(CreateEmptyPattern(patternSize));
@@ -141,10 +165,22 @@ namespace Thesis.help_classes_mm
                 {
                     for (var z = 0; z < patternMatrix.GetLength(2); z++)
                     {
-                        var currentPattern = GetCurrentPattern(inputMatrix, x * patternSize, y * patternSize, z * patternSize, patternSize);
+                        var currentPattern = GetCurrentPattern(
+                            inputMatrix,
+                            x * patternSize,
+                            y * patternSize,
+                            z * patternSize,
+                            patternSize
+                        );
 
                         //the values fro each pattern that we want to optimize
-                        var PatternValue = GetCurrentPatternValue(OptimizeMatrix, x * patternSize, y * patternSize, z * patternSize, patternSize);
+                        var PatternValue = GetCurrentPatternValue(
+                            OptimizeMatrix,
+                            x * patternSize,
+                            y * patternSize,
+                            z * patternSize,
+                            patternSize
+                        );
 
                         var index = patterns.ContainsPattern(currentPattern);
                         if (index < 0)
@@ -164,8 +200,6 @@ namespace Thesis.help_classes_mm
                     }
                 }
             }
-
-
         }
 
         private void InitNeighboursMap()
@@ -192,79 +226,99 @@ namespace Thesis.help_classes_mm
 
                         if (x - 1 >= 0)
                         {
-                            NeighboursMap[currentPattern][Coord3D.Left].Add(patternMatrix[x - 1, y, z]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Left]
+                                .Add(patternMatrix[x - 1, y, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Left]
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Left]
                                     .Add(patternMatrix[patternMatrix.GetLength(0) - 1, y, z]);
                             }
                         }
                         if (x + 1 < patternMatrix.GetLength(0))
                         {
-                            NeighboursMap[currentPattern][Coord3D.Right].Add(patternMatrix[x + 1, y, z]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Right]
+                                .Add(patternMatrix[x + 1, y, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Right].Add(patternMatrix[0, y, z]);
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Right]
+                                    .Add(patternMatrix[0, y, z]);
                             }
                         }
 
                         if (y - 1 >= 0)
                         {
-                            NeighboursMap[currentPattern][Coord3D.Down].Add(patternMatrix[x, y - 1, z]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Down]
+                                .Add(patternMatrix[x, y - 1, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Down]
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Down]
                                     .Add(patternMatrix[x, patternMatrix.GetLength(1) - 1, z]);
                             }
                         }
                         if (y + 1 < patternMatrix.GetLength(1))
                         {
-                            NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, y + 1, z]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Up]
+                                .Add(patternMatrix[x, y + 1, z]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Up].Add(patternMatrix[x, 0, z]);
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Up]
+                                    .Add(patternMatrix[x, 0, z]);
                             }
                         }
 
                         if (z - 1 >= 0)
                         {
-                            NeighboursMap[currentPattern][Coord3D.Back].Add(patternMatrix[x, y, z - 1]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Back]
+                                .Add(patternMatrix[x, y, z - 1]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Back]
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Back]
                                     .Add(patternMatrix[x, y, patternMatrix.GetLength(2) - 1]);
                             }
                         }
                         if (z + 1 < patternMatrix.GetLength(2))
                         {
-                            NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y, z + 1]);
+                            NeighboursMap[currentPattern]
+                                [Coord3D.Forward]
+                                .Add(patternMatrix[x, y, z + 1]);
                         }
                         else
                         {
                             if (Periodic)
                             {
-                                NeighboursMap[currentPattern][Coord3D.Forward].Add(patternMatrix[x, y, 0]);
+                                NeighboursMap[currentPattern]
+                                    [Coord3D.Forward]
+                                    .Add(patternMatrix[x, y, 0]);
                             }
                         }
                     }
                 }
             }
-
 
             //Eliminate duplicates in the neighbours map.
             for (var i = 0; i < patterns.Count; i++)
@@ -275,7 +329,7 @@ namespace Thesis.help_classes_mm
                 }
             }
 
-            //// Add the empty space in case a pattern has no neighbour.  
+            //// Add the empty space in case a pattern has no neighbour.
             for (var i = 0; i < patterns.Count; i++)
             {
                 foreach (var direction in Directions)
@@ -291,9 +345,7 @@ namespace Thesis.help_classes_mm
             //        Debug.LogFormat("Key = {0}, keyin = {1},valuein ={2}", kvp.Key, hhh.Key.X.ToString() + "|"
             //            + hhh.Key.Y.ToString() + "|" + hhh.Key.Z.ToString(), String.Join(", ", hhh.Value));
             //}
-
         }
-
 
         //This method was allowing  incorect adjacencies
 
@@ -398,8 +450,8 @@ namespace Thesis.help_classes_mm
         //        }
         //    }
         //    else
-        //    {            
-        //        outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);                   
+        //    {
+        //        outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
         //    }
 
         //    Propagate(nodeCoords);
@@ -424,7 +476,8 @@ namespace Thesis.help_classes_mm
 
             //Pick a random node to collapse
             var nodeCoords = collapsableNodes[Rnd.Next(collapsableNodes.Count)];
-            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z].ToList();
+            var availableNodeStates = outputMatrix[nodeCoords.X, nodeCoords.Y, nodeCoords.Z]
+                .ToList();
 
             if (ProbabilisticModel)
             {
@@ -432,7 +485,8 @@ namespace Thesis.help_classes_mm
 
                 //Choose a state according to the probability distribution of the states in the input model.
                 double runningTotal = 0;
-                var totalProb = probabilites.Select(x => x)
+                var totalProb = probabilites
+                    .Select(x => x)
                     .Where(x => availableNodeStates.Contains(x.Key))
                     .Sum(x => x.Value);
                 var rndNumb = Rnd.NextDouble() * totalProb;
@@ -443,8 +497,12 @@ namespace Thesis.help_classes_mm
 
                     if (runningTotal > rndNumb)
                     {
-                        outputMatrix.SetValue(new List<int>() { availableNodeState }, nodeCoords.X, nodeCoords.Y,
-                       nodeCoords.Z);
+                        outputMatrix.SetValue(
+                            new List<int>() { availableNodeState },
+                            nodeCoords.X,
+                            nodeCoords.Y,
+                            nodeCoords.Z
+                        );
                         break;
                     }
                 }
@@ -462,7 +520,7 @@ namespace Thesis.help_classes_mm
                 if (Maximize)
                 {
                     var temp = new List<double>();
-                    //picked is the pattern that has the maximum value and we pick it when we want 
+                    //picked is the pattern that has the maximum value and we pick it when we want
                     //to approach a maximum sum in the output model
                     foreach (var item in values_to_optimize)
                     {
@@ -475,11 +533,10 @@ namespace Thesis.help_classes_mm
                 if (Minimize)
                 {
                     var temp = new List<double>();
-                    //picked is the pattern that has the minimum value and we pick it when we want 
+                    //picked is the pattern that has the minimum value and we pick it when we want
                     //to approach a minimum sum in the output model
                     foreach (var item in values_to_optimize)
                     {
-
                         temp.Add(item.Value);
                     }
                     double max = temp.Min();
@@ -487,14 +544,23 @@ namespace Thesis.help_classes_mm
                 }
 
                 //we collapse the node at x y z coordinates in the "picked" state
-                outputMatrix.SetValue(new List<int>() { picked }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
-
+                outputMatrix.SetValue(
+                    new List<int>() { picked },
+                    nodeCoords.X,
+                    nodeCoords.Y,
+                    nodeCoords.Z
+                );
             }
             else
             {
                 //if we don't want to use the probabilities and we don't wont to maximize or minimize a value
                 //we pick one of the available states randomly
-                outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
+                outputMatrix.SetValue(
+                    new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] },
+                    nodeCoords.X,
+                    nodeCoords.Y,
+                    nodeCoords.Z
+                );
             }
 
             Propagate(nodeCoords);
@@ -504,7 +570,6 @@ namespace Thesis.help_classes_mm
 
         protected override void Propagate(Coord3D startPoint)
         {
-
             //Queue the first element.
             var nodesToVisit = new Queue<Coord3D>();
             nodesToVisit.Enqueue(startPoint);
@@ -515,13 +580,17 @@ namespace Thesis.help_classes_mm
                 var current = nodesToVisit.Dequeue();
 
                 //Get the list of the allowed neighbours of the current node
-                var nghbrsMaps = outputMatrix[current.X, current.Y, current.Z].Select(possibleElement => NeighboursMap[possibleElement]).ToList();
+                var nghbrsMaps = outputMatrix[current.X, current.Y, current.Z]
+                    .Select(possibleElement => NeighboursMap[possibleElement])
+                    .ToList();
 
-
-                var allowedNghbrs = nghbrsMaps.SelectMany(dict => dict)
+                var allowedNghbrs = nghbrsMaps
+                    .SelectMany(dict => dict)
                     .ToLookup(pair => pair.Key, pair => pair.Value)
-                    .ToDictionary(group => group.Key, group => group.SelectMany(list => list).ToList());
-
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group.SelectMany(list => list).ToList()
+                    );
 
                 //For every possible direction check if the node has already been affected by the propagation.
                 //If it hasn't queue it up and mark it as visited, otherwise move on.
@@ -529,21 +598,26 @@ namespace Thesis.help_classes_mm
                 {
                     var nodeToBeChanged = current.Add(direction.X, direction.Y, direction.Z);
 
-
                     if (outputMatrix.OutOfBounds(nodeToBeChanged))
                     {
-                        if (!Periodic) continue;
+                        if (!Periodic)
+                            continue;
                         else
                         {
-                            nodeToBeChanged = new Coord3D(Mod(nodeToBeChanged.X, outputMatrix.GetLength(0)),
-                            Mod(nodeToBeChanged.Y, outputMatrix.GetLength(1)),
-                            Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2)));
+                            nodeToBeChanged = new Coord3D(
+                                Mod(nodeToBeChanged.X, outputMatrix.GetLength(0)),
+                                Mod(nodeToBeChanged.Y, outputMatrix.GetLength(1)),
+                                Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2))
+                            );
                         }
                     }
 
-
                     //Count the states before the propagation.
-                    var statesBefore = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
+                    var statesBefore = outputMatrix[
+                        nodeToBeChanged.X,
+                        nodeToBeChanged.Y,
+                        nodeToBeChanged.Z
+                    ].Count;
 
                     //Eliminate neighbours that are not allowed from the output matrix
                     var allowedNghbrsInDirection = allowedNghbrs[direction].Distinct().ToList();
@@ -551,16 +625,21 @@ namespace Thesis.help_classes_mm
                         .RemoveAll(neighbour => !allowedNghbrsInDirection.Contains(neighbour));
 
                     //Count the states after, if nbBefore != nbAfter queue it up.
-                    var statesAfter = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
+                    var statesAfter = outputMatrix[
+                        nodeToBeChanged.X,
+                        nodeToBeChanged.Y,
+                        nodeToBeChanged.Z
+                    ].Count;
 
-                    if (outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count == 0)
+                    if (
+                        outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count
+                        == 0
+                    )
                     {
-
                         Rhino.RhinoApp.WriteLine("contradiction true: from Propagate");
 
                         Contradiction = true;
                         return;
-
                     }
 
                     //Queue it up in order to spread the info to its neighbours and mark it as visited.
@@ -579,14 +658,17 @@ namespace Thesis.help_classes_mm
 
         public override int[,,] GetOutput()
         {
-            var res = new int[outputMatrix.GetLength(0) * PatternSize, outputMatrix.GetLength(1) * PatternSize, outputMatrix.GetLength(2) * PatternSize];
+            var res = new int[
+                outputMatrix.GetLength(0) * PatternSize,
+                outputMatrix.GetLength(1) * PatternSize,
+                outputMatrix.GetLength(2) * PatternSize
+            ];
             for (var x = 0; x < outputMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < outputMatrix.GetLength(1); y++)
                 {
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
-
                         // check if patterns assigned, if not return pattern zero (make sure that pattern zero is empty patter)
                         //var currentPattern = patterns[outputMatrix[x, y, z].Count>0? outputMatrix[x, y, z].First() : 0];
 
@@ -597,8 +679,11 @@ namespace Thesis.help_classes_mm
                             {
                                 for (var k = 0; k < currentPattern.GetLength(2); k++)
                                 {
-                                    res[(x * currentPattern.GetLength(0)) + i, (y * currentPattern.GetLength(1)) + j,
-                                        (z * currentPattern.GetLength(2)) + k] = currentPattern[i, j, k];
+                                    res[
+                                        (x * currentPattern.GetLength(0)) + i,
+                                        (y * currentPattern.GetLength(1)) + j,
+                                        (z * currentPattern.GetLength(2)) + k
+                                    ] = currentPattern[i, j, k];
                                 }
                             }
                         }

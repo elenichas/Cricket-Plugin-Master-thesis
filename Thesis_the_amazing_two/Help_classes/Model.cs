@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Rhino.Geometry;
- 
 
 namespace Thesis.Help_classes
 {
     public abstract class Model
     {
         public static readonly Random Rnd = new Random();
-        public bool ProbabilisticModel { get; protected set; }       
+        public bool ProbabilisticModel { get; protected set; }
         public bool OptimizedModel { get; protected set; }
         public bool Maximize { get; protected set; }
         public bool Minimize { get; protected set; }
@@ -21,7 +20,7 @@ namespace Thesis.Help_classes
 
         public List<double> OptimizableVals;
         public int PatternSize { get; set; }
-        public  Dictionary<int, double> probabilites;
+        public Dictionary<int, double> probabilites;
 
         public Dictionary<int, Dictionary<Coord3D, List<int>>> NeighboursMap { get; protected set; }
         public List<int>[,,] outputMatrix;
@@ -41,9 +40,14 @@ namespace Thesis.Help_classes
         protected abstract void Propagate(Coord3D startPoint);
 
         public abstract int[,,] GetOutput();
- 
 
-        protected static int[,,] GetCurrentPattern(int[,,] matrix, int x, int y, int z, int patternSize)
+        protected static int[,,] GetCurrentPattern(
+            int[,,] matrix,
+            int x,
+            int y,
+            int z,
+            int patternSize
+        )
         {
             var pattern = new int[patternSize, patternSize, patternSize];
             for (var i = x; i < x + patternSize; i++)
@@ -52,15 +56,25 @@ namespace Thesis.Help_classes
                 {
                     for (var k = z; k < z + patternSize; k++)
                     {
-                        pattern[i - x, j - y, k - z] = matrix[i % matrix.GetLength(0), j % matrix.GetLength(1), k % matrix.GetLength(2)];
-
+                        pattern[i - x, j - y, k - z] = matrix[
+                            i % matrix.GetLength(0),
+                            j % matrix.GetLength(1),
+                            k % matrix.GetLength(2)
+                        ];
                     }
                 }
             }
- 
+
             return pattern;
         }
-        protected static double GetCurrentPatternValue(double[,,] matrix, int x, int y, int z, int patternSize)
+
+        protected static double GetCurrentPatternValue(
+            double[,,] matrix,
+            int x,
+            int y,
+            int z,
+            int patternSize
+        )
         {
             var patternvalue = new double[patternSize, patternSize, patternSize];
             for (var i = x; i < x + patternSize; i++)
@@ -69,13 +83,16 @@ namespace Thesis.Help_classes
                 {
                     for (var k = z; k < z + patternSize; k++)
                     {
-                        patternvalue[i - x, j - y, k - z] = matrix[i % matrix.GetLength(0), j % matrix.GetLength(1), k % matrix.GetLength(2)];
-
+                        patternvalue[i - x, j - y, k - z] = matrix[
+                            i % matrix.GetLength(0),
+                            j % matrix.GetLength(1),
+                            k % matrix.GetLength(2)
+                        ];
                     }
                 }
             }
             double sum = patternvalue.Cast<double>().Sum();
-           
+
             return sum;
         }
 
@@ -93,7 +110,6 @@ namespace Thesis.Help_classes
 
                         for (var i = 0; i < patterns.Count; i++)
                         {
-                          
                             outputMatrix[x, y, z].Add(i);
                         }
                     }
@@ -110,15 +126,14 @@ namespace Thesis.Help_classes
                 {
                     for (var z = 0; z < outputMatrix.GetLength(2); z++)
                     {
-                         if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)                            
-                           collapsableNodes.Add(new Coord3D(x, y, z));                      
+                        if (outputMatrix[x, y, z].Count != 1 && outputMatrix[x, y, z].Count != 0)
+                            collapsableNodes.Add(new Coord3D(x, y, z));
                     }
                 }
             }
 
             return collapsableNodes;
         }
-
 
         protected bool CheckIfFinished()
         {
@@ -136,11 +151,7 @@ namespace Thesis.Help_classes
 
         public static int Mod(int n, int m)
         {
-
             return ((n % m) + m) % m;
-
         }
-
-
     }
 }

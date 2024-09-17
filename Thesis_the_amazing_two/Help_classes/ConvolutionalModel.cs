@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace Thesis.Help_classes
 {
-    public class ConvolutionalModel: Model
+    public class ConvolutionalModel : Model
     {
-        public ConvolutionalModel(InputModel inputModel, int patternSize, Coord3D outputSize, bool periodic,
-       bool probabilisticModel)
+        public ConvolutionalModel(
+            InputModel inputModel,
+            int patternSize,
+            Coord3D outputSize,
+            bool periodic,
+            bool probabilisticModel
+        )
         {
             NeighboursMap = new Dictionary<int, Dictionary<Coord3D, List<int>>>();
             Periodic = periodic;
@@ -23,9 +28,6 @@ namespace Thesis.Help_classes
             FindNeighbours();
 
             InitOutputMatrix(outputSize);
-
-            //Debug.Log($"Model size: {new Vector3(inputModel.Size.X, inputModel.Size.Y, inputModel.Size.Z)}");
-           // Debug.Log("Model Ready!");
         }
 
         protected override void Initialize(InputModel inputModel, int patternSize, bool periodic)
@@ -40,13 +42,16 @@ namespace Thesis.Help_classes
             }
             else
             {
-                patternMatrix = new int[inputModel.Size.X - patternSize + 1,
+                patternMatrix = new int[
+                    inputModel.Size.X - patternSize + 1,
                     inputModel.Size.Y - patternSize + 1,
-                    inputModel.Size.Z - patternSize + 1];
+                    inputModel.Size.Z - patternSize + 1
+                ];
             }
 
-            inputModel.Voxels.ForEach(voxel => inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity);
-
+            inputModel.Voxels.ForEach(voxel =>
+                inputMatrix[voxel.X, voxel.Y, voxel.Z] = voxel.Identity
+            );
 
             for (var x = 0; x < patternMatrix.GetLength(0); x++)
             {
@@ -115,7 +120,6 @@ namespace Thesis.Help_classes
                 {
                     for (var k = 0; k < (2 * PatternSize - 1); k++)
                     {
-
                         var f = ConstructKernel(pattern, otherPattern, i, j, k);
 
                         var matchingVoxels = 0;
@@ -125,7 +129,6 @@ namespace Thesis.Help_classes
                             {
                                 for (var z = 0; z < PatternSize; z++)
                                 {
-
                                     if (f[x + i, y + j, z + k] == h[x, y, z])
                                     {
                                         matchingVoxels++;
@@ -137,18 +140,25 @@ namespace Thesis.Help_classes
                         if (matchingVoxels == PatternSize * PatternSize * PatternSize)
                         {
                             //add to the pattern matrix
-                            NeighboursMap[patternIndex][new Coord3D(i, j, k)].Add(otherPatternIndex);
+                            NeighboursMap[patternIndex]
+                                [new Coord3D(i, j, k)]
+                                .Add(otherPatternIndex);
                         }
                     }
                 }
             }
         }
 
-        public  int[,,] ConstructKernel(int[,,] pattern1, int[,,] pattern2, int originX, int originY, int originZ)
+        public int[,,] ConstructKernel(
+            int[,,] pattern1,
+            int[,,] pattern2,
+            int originX,
+            int originY,
+            int originZ
+        )
         {
             var kernelSize = PatternSize + 2 * (PatternSize - 1);
             var res = new int[kernelSize, kernelSize, kernelSize];
-
 
             for (var x = 0; x < kernelSize; x++)
             {
@@ -156,22 +166,26 @@ namespace Thesis.Help_classes
                 {
                     for (var z = 0; z < kernelSize; z++)
                     {
-
-                        if ((x >= originX && x < originX + PatternSize) &&
-                            (y >= originY && y < originY + PatternSize) &&
-                            (z >= originZ && z < originZ + PatternSize))
+                        if (
+                            (x >= originX && x < originX + PatternSize)
+                            && (y >= originY && y < originY + PatternSize)
+                            && (z >= originZ && z < originZ + PatternSize)
+                        )
                         {
-
                             res[x, y, z] = pattern2[x - originX, y - originY, z - originZ];
-
                         }
 
-                        if ((x >= PatternSize - 1 && x < kernelSize - PatternSize + 1) &&
-                           (y >= PatternSize - 1 && y < kernelSize - PatternSize + 1) &&
-                           (z >= PatternSize - 1 && z < kernelSize - PatternSize + 1))
+                        if (
+                            (x >= PatternSize - 1 && x < kernelSize - PatternSize + 1)
+                            && (y >= PatternSize - 1 && y < kernelSize - PatternSize + 1)
+                            && (z >= PatternSize - 1 && z < kernelSize - PatternSize + 1)
+                        )
                         {
-
-                            res[x, y, z] = pattern1[x - (PatternSize - 1), y - (PatternSize - 1), z - (PatternSize - 1)];
+                            res[x, y, z] = pattern1[
+                                x - (PatternSize - 1),
+                                y - (PatternSize - 1),
+                                z - (PatternSize - 1)
+                            ];
                         }
                     }
                 }
@@ -179,7 +193,6 @@ namespace Thesis.Help_classes
 
             return res;
         }
-
 
         public override void Observe()
         {
@@ -197,13 +210,13 @@ namespace Thesis.Help_classes
 
             if (ProbabilisticModel)
             {
-
                 //Eliminate all duplicates from the list of possible states.
                 availableNodeStates = availableNodeStates.Distinct().ToList().Shuffle().ToList();
 
                 //Choose a state according to the probability distribution of the states in the input model.
                 double runningTotal = 0;
-                var totalProb = probabilites.Select(x => x)
+                var totalProb = probabilites
+                    .Select(x => x)
                     .Where(x => availableNodeStates.Contains(x.Key))
                     .Sum(x => x.Value);
                 var rndNumb = Rnd.NextDouble() * totalProb;
@@ -212,8 +225,12 @@ namespace Thesis.Help_classes
                     runningTotal += probabilites[availableNodeState];
                     if (runningTotal > rndNumb)
                     {
-                        outputMatrix.SetValue(new List<int>() { availableNodeState }, nodeCoords.X, nodeCoords.Y,
-                            nodeCoords.Z);
+                        outputMatrix.SetValue(
+                            new List<int>() { availableNodeState },
+                            nodeCoords.X,
+                            nodeCoords.Y,
+                            nodeCoords.Z
+                        );
                         break;
                     }
                 }
@@ -221,9 +238,13 @@ namespace Thesis.Help_classes
             else
             {
                 //Collapse into random definite state.
-                outputMatrix.SetValue(new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] }, nodeCoords.X, nodeCoords.Y, nodeCoords.Z);
+                outputMatrix.SetValue(
+                    new List<int>() { availableNodeStates[Rnd.Next(availableNodeStates.Count)] },
+                    nodeCoords.X,
+                    nodeCoords.Y,
+                    nodeCoords.Z
+                );
             }
-
 
             Propagate(nodeCoords);
 
@@ -232,7 +253,6 @@ namespace Thesis.Help_classes
 
         protected override void Propagate(Coord3D startPoint)
         {
-
             //Queue the first element.
             var nodesToVisit = new Queue<Coord3D>();
             nodesToVisit.Enqueue(startPoint);
@@ -243,11 +263,16 @@ namespace Thesis.Help_classes
 
                 //Get the list of the allowed neighbours of the current node
                 var nghbrsMaps = outputMatrix[current.X, current.Y, current.Z]
-                    .Select(possibleElem => NeighboursMap[possibleElem]).ToList();
+                    .Select(possibleElem => NeighboursMap[possibleElem])
+                    .ToList();
 
-                var allowedNghbrs = nghbrsMaps.SelectMany(dict => dict)
+                var allowedNghbrs = nghbrsMaps
+                    .SelectMany(dict => dict)
                     .ToLookup(pair => pair.Key, pair => pair.Value)
-                    .ToDictionary(group => group.Key, group => group.SelectMany(list => list).ToList());
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group.SelectMany(list => list).ToList()
+                    );
 
                 //For every possible direction check if the node has already been reached by the propagtion.
                 //If not, queue it up and mark it as visited, otherwise move on.
@@ -257,7 +282,6 @@ namespace Thesis.Help_classes
                     {
                         for (var dz = -PatternSize + 1; dz < PatternSize; dz++)
                         {
-
                             var nodeToBeChanged = current.Add(dx, dy, dz);
 
                             //Manage the periodic vs non-periodic cases.
@@ -268,9 +292,11 @@ namespace Thesis.Help_classes
 
                             if (outputMatrix.OutOfBounds(nodeToBeChanged) && Periodic)
                             {
-                                nodeToBeChanged = new Coord3D(Mod(nodeToBeChanged.X, outputMatrix.GetLength(0)),
+                                nodeToBeChanged = new Coord3D(
+                                    Mod(nodeToBeChanged.X, outputMatrix.GetLength(0)),
                                     Mod(nodeToBeChanged.Y, outputMatrix.GetLength(1)),
-                                    Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2)));
+                                    Mod(nodeToBeChanged.Z, outputMatrix.GetLength(2))
+                                );
 
                                 if (outputMatrix.OutOfBounds(nodeToBeChanged))
                                 {
@@ -279,35 +305,53 @@ namespace Thesis.Help_classes
                             }
 
                             //Count the states before the propagation.
-                            var statesBefore = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
+                            var statesBefore = outputMatrix[
+                                nodeToBeChanged.X,
+                                nodeToBeChanged.Y,
+                                nodeToBeChanged.Z
+                            ].Count;
 
                             //Eliminate all neighbours that are not allowed form the output matrix
-                            var propMatrixDirection =
-                                new Coord3D(PatternSize - 1 - dx, PatternSize - 1 - dy, PatternSize - 1 - dz);
-                            var allowedNghbrsInDirection =
-                                allowedNghbrs[propMatrixDirection].Distinct().ToList();
+                            var propMatrixDirection = new Coord3D(
+                                PatternSize - 1 - dx,
+                                PatternSize - 1 - dy,
+                                PatternSize - 1 - dz
+                            );
+                            var allowedNghbrsInDirection = allowedNghbrs[propMatrixDirection]
+                                .Distinct()
+                                .ToList();
 
                             outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z]
-                                .RemoveAll(neighbour => !allowedNghbrsInDirection.Contains(neighbour));
+                                .RemoveAll(neighbour =>
+                                    !allowedNghbrsInDirection.Contains(neighbour)
+                                );
 
-                            if (outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count == 0)
+                            if (
+                                outputMatrix[
+                                    nodeToBeChanged.X,
+                                    nodeToBeChanged.Y,
+                                    nodeToBeChanged.Z
+                                ].Count == 0
+                            )
                             {
                                 Contradiction = true;
                                 return;
                             }
 
                             //Count the states after, if nbBefore != nbAfter queue it up.
-                            var statesAfter = outputMatrix[nodeToBeChanged.X, nodeToBeChanged.Y, nodeToBeChanged.Z].Count;
+                            var statesAfter = outputMatrix[
+                                nodeToBeChanged.X,
+                                nodeToBeChanged.Y,
+                                nodeToBeChanged.Z
+                            ].Count;
 
                             if (statesBefore != statesAfter)
                             {
-
                                 if (!nodesToVisit.Contains(nodeToBeChanged))
                                 {
                                     nodesToVisit.Enqueue(nodeToBeChanged);
                                 }
                             }
-
                         }
                     }
                 }
@@ -318,7 +362,11 @@ namespace Thesis.Help_classes
 
         public override int[,,] GetOutput()
         {
-            var res = new int[outputMatrix.GetLength(0), outputMatrix.GetLength(1), outputMatrix.GetLength(2)];
+            var res = new int[
+                outputMatrix.GetLength(0),
+                outputMatrix.GetLength(1),
+                outputMatrix.GetLength(2)
+            ];
             for (var x = 0; x < outputMatrix.GetLength(0); x++)
             {
                 for (var y = 0; y < outputMatrix.GetLength(1); y++)

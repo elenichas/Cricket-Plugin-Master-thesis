@@ -1,14 +1,14 @@
-﻿using Rhino.Geometry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rhino.Geometry;
 
 namespace Thesis.Help_classes
 {
-   public class ConvolutionalModelDemo
-   {
+    public class ConvolutionalModelDemo
+    {
         public bool probabilisticModel;
         public bool periodic;
 
@@ -18,27 +18,43 @@ namespace Thesis.Help_classes
         public static int[,,] output;
 
         public string message;
-        public ConvolutionalModelDemo(Vector3d inSize, Vector3d outSize, List<Voxel> inputVoxels, int pattern_Size, bool probabilistic, bool periodic)
+
+        public ConvolutionalModelDemo(
+            Vector3d inSize,
+            Vector3d outSize,
+            List<Voxel> inputVoxels,
+            int pattern_Size,
+            bool probabilistic,
+            bool periodic
+        )
         {
             //from this model we get our input
-            InputModel model = new InputModel(new Coord3D((int)inSize.X, (int)inSize.Y, (int)inSize.Z), inputVoxels);
+            InputModel model = new InputModel(
+                new Coord3D((int)inSize.X, (int)inSize.Y, (int)inSize.Z),
+                inputVoxels
+            );
 
             //this is the size of the output model
             var outputSizeInCoord = new Coord3D((int)outSize.X, (int)outSize.Y, (int)outSize.Z);
 
             //from this model we will get our output
-            Model = new ConvolutionalModel(model, pattern_Size, outputSizeInCoord, periodic, probabilistic);
+            Model = new ConvolutionalModel(
+                model,
+                pattern_Size,
+                outputSizeInCoord,
+                periodic,
+                probabilistic
+            );
         }
 
+        // private void Start()
+        //{
+        //     var inputModel = Init();
 
-       // private void Start()
-       //{
-       //     var inputModel = Init();
+        //     var outputSizeInCoord = new Coord3D((int)outputSize.x, (int)outputSize.y, (int)outputSize.z);
 
-       //     var outputSizeInCoord = new Coord3D((int)outputSize.x, (int)outputSize.y, (int)outputSize.z);
-
-       //     Model = new ConvolutionalModel(inputModel, patternSize, outputSizeInCoord, periodic, probabilisticModel);
-       // }
+        //     Model = new ConvolutionalModel(inputModel, patternSize, outputSizeInCoord, periodic, probabilisticModel);
+        // }
 
         //private new void Update()
         //{
@@ -47,11 +63,9 @@ namespace Thesis.Help_classes
 
         public void GenerateOutput()
         {
-
             var Gen = 0;
             while ((!Model.GenerationFinished) && (Gen < 500))
             {
-
                 Model.Observe();
 
                 Gen++;
@@ -61,11 +75,10 @@ namespace Thesis.Help_classes
                     message += "I failed after " + Gen + " iterations";
                     Model.Clear();
                 }
-
             }
             message += "I am done after " + Gen + " iterations";
         }
-       
+
         public void GenerateOutputOnDemand()
         {
             Model.Observe();
@@ -73,7 +86,6 @@ namespace Thesis.Help_classes
             {
                 message += "I failed after " + Model.NumGen + " iterations";
             }
-
         }
 
         public void DisplayOutput()
@@ -94,5 +106,4 @@ namespace Thesis.Help_classes
             return voxModel.Get(output);
         }
     }
-
 }

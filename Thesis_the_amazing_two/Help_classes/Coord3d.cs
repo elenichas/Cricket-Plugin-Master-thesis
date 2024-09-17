@@ -8,7 +8,6 @@ namespace Thesis.Help_classes
 {
     public struct Coord3D : IEquatable<Coord3D>
     {
-
         public int X { get; }
         public int Y { get; }
         public int Z { get; }
@@ -32,7 +31,12 @@ namespace Thesis.Help_classes
 
         public override int GetHashCode()
         {
-            return new { X, Y, Z }.GetHashCode();
+            return new
+            {
+                X,
+                Y,
+                Z,
+            }.GetHashCode();
         }
 
         public override bool Equals(object obj)

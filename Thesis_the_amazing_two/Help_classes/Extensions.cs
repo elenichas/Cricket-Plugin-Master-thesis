@@ -1,21 +1,24 @@
-﻿using Rhino.Geometry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
- 
+using Rhino.Geometry;
 
 namespace Thesis.Help_classes
 {
     public static class Extensions
     {
-
         private static readonly Random rng = new Random();
 
         public static bool OutOfBounds<T>(this T[,,] array, Vector3d coords)
         {
-            if (coords.X >= array.GetLowerBound(0) && coords.X <= array.GetUpperBound(0) &&
-                coords.Y >= array.GetLowerBound(1) && coords.Y <= array.GetUpperBound(1) &&
-                coords.Z >= array.GetLowerBound(2) && coords.Z <= array.GetUpperBound(2))
+            if (
+                coords.X >= array.GetLowerBound(0)
+                && coords.X <= array.GetUpperBound(0)
+                && coords.Y >= array.GetLowerBound(1)
+                && coords.Y <= array.GetUpperBound(1)
+                && coords.Z >= array.GetLowerBound(2)
+                && coords.Z <= array.GetUpperBound(2)
+            )
             {
                 return false;
             }
@@ -27,9 +30,14 @@ namespace Thesis.Help_classes
 
         public static bool OutOfBounds<T>(this T[,,] array, Coord3D coords)
         {
-            if (coords.X >= array.GetLowerBound(0) && coords.X <= array.GetUpperBound(0) &&
-                coords.Y >= array.GetLowerBound(1) && coords.Y <= array.GetUpperBound(1) &&
-                coords.Z >= array.GetLowerBound(2) && coords.Z <= array.GetUpperBound(2))
+            if (
+                coords.X >= array.GetLowerBound(0)
+                && coords.X <= array.GetUpperBound(0)
+                && coords.Y >= array.GetLowerBound(1)
+                && coords.Y <= array.GetUpperBound(1)
+                && coords.Z >= array.GetLowerBound(2)
+                && coords.Z <= array.GetUpperBound(2)
+            )
             {
                 return false;
             }
@@ -39,10 +47,11 @@ namespace Thesis.Help_classes
             }
         }
 
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector)
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector
+        )
         {
-
             HashSet<TKey> seenKeys = new HashSet<TKey>();
             foreach (TSource element in source)
             {
@@ -55,7 +64,7 @@ namespace Thesis.Help_classes
 
         public static IEnumerable<T> Shuffle<T>(this IList<T> list)
         {
-            var res = list;          
+            var res = list;
             var n = res.Count;
             while (n > 1)
             {
@@ -65,15 +74,15 @@ namespace Thesis.Help_classes
                 res[k] = res[n];
                 res[n] = value;
             }
-          
+
             return res;
         }
 
- 
         public static int ContainsPattern(this List<int[,,]> patternList, int[,,] pattern)
         {
             //If the list is empty return false.
-            if (patternList.Count == 0) return -1;
+            if (patternList.Count == 0)
+                return -1;
 
             var index = 0;
 
@@ -93,7 +102,8 @@ namespace Thesis.Help_classes
                         }
                     }
                 }
-                if (sameVox == pattern.Length) return index;
+                if (sameVox == pattern.Length)
+                    return index;
                 index++;
             }
 
@@ -120,45 +130,33 @@ namespace Thesis.Help_classes
 
             if (side.Equals(Coord3D.Left))
             {
-
                 startX = pattern.GetLength(0) - 1;
                 endX2 = 1;
-
             }
             else if (side.Equals(Coord3D.Right))
             {
-
                 endX = 1;
                 startX2 = pattern.GetLength(0) - 1;
-
             }
             else if (side.Equals(Coord3D.Down))
             {
-
                 endY = 1;
                 startY2 = pattern.GetLength(1) - 1;
-
             }
             else if (side.Equals(Coord3D.Up))
             {
-
                 startY = pattern.GetLength(1) - 1;
                 endY2 = 1;
-
             }
             else if (side.Equals(Coord3D.Back))
             {
-
                 startZ = pattern.GetLength(2) - 1;
                 endZ2 = 1;
-
             }
             else if (side.Equals(Coord3D.Forward))
             {
-
                 endZ = 1;
                 startZ2 = pattern.GetLength(2) - 1;
-
             }
 
             var loopX2 = startX2;
@@ -186,7 +184,7 @@ namespace Thesis.Help_classes
             return true;
         }
 
-            public static List<int>[,,] CloneMatrix(this List<int>[,,] matrix)
+        public static List<int>[,,] CloneMatrix(this List<int>[,,] matrix)
         {
             var res = new List<int>[matrix.GetLength(0), matrix.GetLength(1), matrix.GetLength(2)];
 

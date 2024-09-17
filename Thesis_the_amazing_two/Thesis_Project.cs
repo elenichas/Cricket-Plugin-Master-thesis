@@ -8,10 +8,7 @@ namespace Thesis
     {
         public override string Name
         {
-            get
-            {
-                return "Thesistheamazingtwo";
-            }
+            get { return "Thesistheamazingtwo"; }
         }
         public override Bitmap Icon
         {
@@ -31,10 +28,7 @@ namespace Thesis
         }
         public override Guid Id
         {
-            get
-            {
-                return new Guid("215d6eb6-4e5a-4766-a86b-fe5376831dc6");
-            }
+            get { return new Guid("215d6eb6-4e5a-4766-a86b-fe5376831dc6"); }
         }
 
         public override string AuthorName

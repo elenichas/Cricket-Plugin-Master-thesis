@@ -1,14 +1,12 @@
-﻿using Rhino.Geometry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
- 
+using Rhino.Geometry;
 
 namespace Thesis.Help_classes
 {
     public class VoxelModel
     {
-  
         public List<Voxel> Get(int[,,] output)
         {
             var voxels = new List<Voxel>();
@@ -20,20 +18,16 @@ namespace Thesis.Help_classes
                     for (var z = 0; z < output.GetLength(2); z++)
                     {
                         //we assign 0 for empty voxels
-                        if (output[x, y, z] != 0)                
+                        if (output[x, y, z] != 0)
                         {
-                             
-                           var cube = new Voxel(x, y, z, output[x,y,z]);
-                           voxels.Add(cube);
-                       }
+                            var cube = new Voxel(x, y, z, output[x, y, z]);
+                            voxels.Add(cube);
+                        }
                     }
                 }
             }
 
-             
             return voxels;
         }
-
-        
     }
 }

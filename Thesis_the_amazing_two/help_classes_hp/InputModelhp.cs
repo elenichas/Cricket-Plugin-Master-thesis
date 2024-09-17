@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Thesis.Help_classes;
 
 namespace Thesis.help_classes_hp

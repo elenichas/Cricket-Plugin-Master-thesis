@@ -1,13 +1,14 @@
-﻿using Rhino.Geometry;
-using System.Drawing;
- 
+﻿using System.Drawing;
+using Rhino.Geometry;
 
 namespace Thesis.Help_classes
 {
     public class Voxel
     {
         //the x,y,z coordinates
-        public byte X, Y, Z;
+        public byte X,
+            Y,
+            Z;
 
         //the color of each voxel
         public int Identity;
@@ -20,19 +21,15 @@ namespace Thesis.Help_classes
             Y = (byte)y;
             Z = (byte)z;
             Identity = identity;
-         
-
         }
-        public Voxel(int x, int y, int z, int identity,double value)
+
+        public Voxel(int x, int y, int z, int identity, double value)
         {
             X = (byte)x;
             Y = (byte)y;
             Z = (byte)z;
             Identity = identity;
             Value = value;
-
         }
-
-
     }
-    }
+}
